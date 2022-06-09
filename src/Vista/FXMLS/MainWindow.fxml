@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="501.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.MainWindow">
+   <children>
+      <Pane prefHeight="502.0" prefWidth="906.0">
+         <children>
+            <TreeView fx:id="treeView" layoutX="3.0" layoutY="3.0" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" prefHeight="495.0" prefWidth="238.0" />
+            <Pane fx:id="paneListaArchivos" layoutX="252.0" layoutY="41.0" prefHeight="463.0" prefWidth="655.0" visible="false" />
+            <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="877.0" layoutY="3.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/salir.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
