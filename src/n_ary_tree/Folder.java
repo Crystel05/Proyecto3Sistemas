@@ -9,19 +9,10 @@ package n_ary_tree;
  *
  * @author Alexander
  */
-public class file extends Element{
-
-    private String data;
-    public file(String name, String pData) {
+public class Folder extends Element{
+    
+    public Folder(String name) {
         super(name);
-        this.data = pData;
     }
     
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String pData) {
-        this.data = pData;
-    }
 }

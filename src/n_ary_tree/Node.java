@@ -15,7 +15,7 @@ import java.util.List;
 public class Node {
     Element value; //para almacenar cualquier valor
     Node parent;//variable nodo padre
-    List<Node> children = new LinkedList<>();
+    private List<Node> children = new LinkedList<>();
     
     //Creando los constructores
     public Node()
