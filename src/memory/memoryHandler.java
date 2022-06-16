@@ -13,6 +13,7 @@ import java.util.List;
  * @author Alexander
  */
 public class memoryHandler {
+    private static final String simulationPath ="./Simulacion File System";
     public static int numSectors;
     public static int lenghtXSector;
     public static List<sector> sectors = new LinkedList<>();
@@ -26,7 +27,9 @@ public class memoryHandler {
             count+=lenghtXSector;
         }
     }
-    
+    public static String getSimulationPath(){
+        return simulationPath;
+    }
 
     public static int getNumSectors() {
         return numSectors;

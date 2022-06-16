@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,11 +23,10 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("root"));
-        File directorio = new File("./Simulacion File System/root");
+        File directorio = new File(memory.memoryHandler.getSimulationPath() + "/root");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
-                System.out.println("Directorio raiz creado");
-                
+                System.out.println("Directorio raiz creado"); 
             } else {
                 System.out.println("Error al crear el directorio raiz");
             }
@@ -60,6 +60,62 @@ public class Tree {
         
         return Aux;
     }
+    public void delete(Node n){
+        String p = "";
+        if(n.getValue() instanceof Filee){
+         p = memory.memoryHandler.getSimulationPath()+pathListToStr(getPath(n))+".txt";
+        }else{
+            p =memory.memoryHandler.getSimulationPath()+ pathListToStr(getPath(n));
+        }
+           File f = new File(p);
+           if (f.delete())
+                System.out.println("El fichero ha sido borrado satisfactoriamente");
+            else
+                System.out.println("El fichero no puede ser borrado");
+    }
+    public void removeAux(Node n)
+    {
+        if(n.getValue() instanceof Filee) {
+            //TODO: Función para eliminar el archivo de la memoria
+            delete(n);
+           
+         }
+        if(n.getValue() instanceof Folder) {
+            for (Node childs : n.getChildren()) {
+                removeAux(n);
+            }
+            delete(n);
+        } 
+    }
+    public void remove(String pPath)
+    {
+        ArrayList<String> path = pathStrToList(pPath);
+        Node n = getNode(path);
+        System.err.println(n.value.getName());
+        removeAux(n);
+        
+        
+    }
+    
+    public ArrayList<String> pathStrToList(String pPath)
+    {
+        String[] aux= pPath.split("/");
+        ArrayList<String> path = new ArrayList<>();
+        Collections.addAll(path, aux);
+        
+        return path;
+    }
+    
+    public String pathListToStr(ArrayList<String> pPath)
+    {
+        String path= "";
+        for(String subDirect : pPath) {
+            path+=subDirect+"/";
+        }
+        path = path.substring(0, path.length()-1); ///Eliminar ultimo caracter "/" del string
+        return path;
+    }
+    
     public void createDirectory(String path){
         File directorio = new File(path);
         if (!directorio.exists()) {
@@ -89,7 +145,7 @@ public class Tree {
     }
     public Node insert(Element newNodeElement, Node location)
     {
-        String path = "./Simulacion File System";
+        String path = memory.memoryHandler.getSimulationPath();
         ArrayList<String> AuxPath =getPath(location);
         for (String str : AuxPath) {
             path+="/"+str;

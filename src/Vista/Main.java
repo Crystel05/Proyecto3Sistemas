@@ -17,7 +17,7 @@ public class Main {
         //Set memory data 
         memoryHandler.setData(10, 10);
         
-        File directorio = new File("./Simulacion File System");
+        File directorio = new File(memoryHandler.getSimulationPath());
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -40,5 +40,6 @@ public class Main {
         sects.add(1);sects.add(2);
         fil.setSectors(sects);
         arbol.insert(fil, c);
+        //arbol.remove("root/Carpeta1/file1");
     }
 }
