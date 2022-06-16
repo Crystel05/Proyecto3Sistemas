@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="416.0" prefWidth="571.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.AddNew">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="416.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="571.0" />
+      <Label layoutX="181.0" layoutY="22.0" text="AGREGAR ARCHIVO" textFill="#2a50d1">
+         <font>
+            <Font name="Britannic Bold" size="25.0" />
+         </font>
+      </Label>
+      <TextField fx:id="diskSize" blendMode="MULTIPLY" layoutX="298.0" layoutY="74.0">
+         <font>
+            <Font name="Broadway" size="12.0" />
+         </font>
+      </TextField>
+      <Label layoutX="33.0" layoutY="76.0" text="Nombre del archivo" textFill="#2a50d1">
+         <font>
+            <Font name="Broadway" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="270.0" text="Contenido" textFill="#2a50d1">
+         <font>
+            <Font name="Broadway" size="16.0" />
+         </font>
+      </Label>
+      <Button blendMode="MULTIPLY" layoutX="231.0" layoutY="385.0" mnemonicParsing="false" onAction="#createFile" text="CREAR ARCHIVO" textFill="#2a50d1">
+         <font>
+            <Font name="Broadway" size="13.0" />
+         </font>
+      </Button>
+      <Label layoutX="33.0" layoutY="128.0" text="Extensión" textFill="#2a50d1">
+         <font>
+            <Font name="Broadway" size="16.0" />
+         </font>
+      </Label>
+      <ComboBox blendMode="MULTIPLY" layoutX="297.0" layoutY="124.0" prefHeight="26.0" prefWidth="161.0" />
+      <TextArea blendMode="MULTIPLY" layoutX="136.0" layoutY="187.0" prefHeight="186.0" prefWidth="406.0" />
+   </children>
+</AnchorPane>

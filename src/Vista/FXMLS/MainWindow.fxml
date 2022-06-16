@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
@@ -10,52 +12,80 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="501.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.MainWindow">
    <children>
-      <Pane prefHeight="502.0" prefWidth="906.0" style="-fx-background-color: DODGERBLUE;">
+      <Pane prefHeight="502.0" prefWidth="906.0" style="-fx-background-color: LIGHTSKYBLUE;">
          <children>
-            <TreeView fx:id="treeView" layoutX="3.0" layoutY="49.0" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" opacity="0.68" prefHeight="449.0" prefWidth="238.0" stylesheets="@../CSS/treeViewStyle.css" />
-            <Pane fx:id="paneFilePreview" layoutX="241.0" layoutY="49.0" prefHeight="449.0" prefWidth="665.0" visible="false">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="502.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="906.0" />
+            <TreeView fx:id="treeView" layoutX="14.0" layoutY="51.0" onContextMenuRequested="#selectItem" onMouseClicked="#selectItem" opacity="0.68" prefHeight="390.0" prefWidth="238.0" stylesheets="@../CSS/treeViewStyle.css" />
+            <Pane fx:id="paneFilePreview" layoutX="348.0" layoutY="49.0" prefHeight="449.0" prefWidth="497.0" visible="false">
                <children>
-                  <ImageView fitHeight="400.0" fitWidth="651.0" layoutX="7.0" layoutY="46.0" opacity="0.76" pickOnBounds="true">
+                  <ImageView fitHeight="267.0" fitWidth="441.0" layoutX="33.0" layoutY="46.0" opacity="0.76" pickOnBounds="true">
                      <image>
                         <Image url="@../Imagenes/fondoFilePreview.jpg" />
                      </image>
                   </ImageView>
-                  <TextArea fx:id="filePreviewTA" blendMode="MULTIPLY" editable="false" layoutX="7.0" layoutY="46.0" prefHeight="400.0" prefWidth="651.0" />
-                  <HBox alignment="CENTER" layoutY="14.0" prefHeight="26.0" prefWidth="665.0">
+                  <TextArea fx:id="filePreviewTA" blendMode="MULTIPLY" editable="false" layoutX="33.0" layoutY="46.0" prefHeight="267.0" prefWidth="441.0" />
+                  <HBox alignment="CENTER" layoutY="14.0" prefHeight="26.0" prefWidth="497.0">
                      <children>
-                        <Text fill="#2c00b2" strokeType="OUTSIDE" strokeWidth="0.0" text="Vista previa de ">
+                        <Text fill="#2a50d1" strokeType="OUTSIDE" strokeWidth="0.0" text="Vista previa de ">
                            <font>
                               <Font name="Felix Titling" size="18.0" />
                            </font>
                         </Text>
-                        <Text fx:id="fileName" fill="#2c00b2" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre archivo">
+                        <Text fx:id="fileName" fill="#2a50d1" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre archivo">
                            <font>
                               <Font name="Felix Titling" size="18.0" />
                            </font></Text>
                      </children>
                   </HBox>
+                  <ImageView fitHeight="42.0" fitWidth="89.0" layoutX="181.0" layoutY="380.0" onMouseClicked="#seeProperties" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagenes/editar.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="42.0" fitWidth="89.0" layoutX="267.0" layoutY="380.0" onMouseClicked="#editFile" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagenes/verPropiedades.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="268.0" layoutY="422.0" text="EDITAR" textFill="#2c00b2">
+                     <font>
+                        <Font name="Britannic Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="191.0" layoutY="422.0" text="INFO" textFill="#2c00b2">
+                     <font>
+                        <Font name="Britannic Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="guardarCambios" blendMode="MULTIPLY" layoutX="210.0" layoutY="320.0" mnemonicParsing="false" onAction="#save" text="GUARDAR" textFill="#2a50d1" visible="false">
+                     <font>
+                        <Font name="Broadway" size="13.0" />
+                     </font>
+                  </Button>
                </children></Pane>
-            <Pane fx:id="paneFileList" layoutX="241.0" layoutY="49.0" prefHeight="449.0" prefWidth="665.0" visible="false">
+            <Pane fx:id="paneFileList" layoutX="348.0" layoutY="50.0" prefHeight="449.0" prefWidth="497.0" visible="false">
                <children>
-                  <ListView fx:id="filesListSearch" layoutX="7.0" layoutY="46.0" prefHeight="400.0" prefWidth="651.0" />
-                  <Text fill="#2c00b2" layoutX="193.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resultados de la búsqueda">
+                  <ListView fx:id="filesListSearch" blendMode="MULTIPLY" layoutX="12.0" layoutY="47.0" prefHeight="382.0" prefWidth="473.0" />
+                  <Text fill="#2c00b2" layoutX="104.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resultados de la búsqueda">
                      <font>
                         <Font name="Felix Titling" size="18.0" />
                      </font>
                   </Text>
                </children>
             </Pane>
-            <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="879.0" layoutY="2.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="875.0" layoutY="4.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/salir.png" />
                </image>
             </ImageView>
-            <Label layoutX="504.0" layoutY="15.0" text="FILE SYSTEM" textFill="#2c00b2">
+            <Label layoutX="527.0" layoutY="15.0" text="FILE SYSTEM" textFill="#2a50d1">
                <font>
                   <Font name="Britannic Bold" size="25.0" />
                </font>
@@ -64,7 +94,7 @@
                <font>
                   <Font name="Felix Titling" size="13.0" />
                </font></TextField>
-            <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="208.0" layoutY="16.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="207.0" layoutY="16.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/buscar.png" />
                </image>
@@ -76,6 +106,120 @@
                         <Image url="@../Imagenes/placeHolder.gif" />
                      </image>
                   </ImageView>
+               </children>
+            </Pane>
+            <ImageView fitHeight="42.0" fitWidth="47.0" layoutX="15.0" layoutY="451.0" onMouseClicked="#createFile" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/agregarArchivo.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="42.0" fitWidth="41.0" layoutX="61.0" layoutY="454.0" onMouseClicked="#createDirectory" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/agregarCarpeta.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="42.0" fitWidth="41.0" layoutX="118.0" layoutY="456.0" onMouseClicked="#move" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/move.png" />
+               </image>
+            </ImageView>
+            <Pane fx:id="movePane" layoutX="330.0" layoutY="66.0" prefHeight="406.0" prefWidth="486.0" visible="false">
+               <children>
+                  <Pane fx:id="renamePane" layoutX="7.0" layoutY="229.0" prefHeight="175.0" prefWidth="473.0" visible="false">
+                     <children>
+                        <Label layoutX="22.0" layoutY="14.0" text="En la carpeta de destino existe un archivo/carpeta" textFill="#ff0c04">
+                           <font>
+                              <Font name="Broadway" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="148.0" layoutY="33.0" text="con el mismo nombre" textFill="RED">
+                           <font>
+                              <Font name="Broadway" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="64.0" layoutY="78.0" text="Escriba un nuevo nombre para moverlo" textFill="#2a50d1">
+                           <font>
+                              <Font name="Broadway" size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField blendMode="MULTIPLY" layoutX="153.0" layoutY="108.0" />
+                        <Button fx:id="guardarCambios1" blendMode="MULTIPLY" layoutX="123.0" layoutY="142.0" mnemonicParsing="false" onAction="#save" prefHeight="23.0" prefWidth="93.0" text="MOVER" textFill="#2a50d1">
+                           <font>
+                              <Font name="Broadway" size="13.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="guardarCambios11" blendMode="MULTIPLY" layoutX="246.0" layoutY="142.0" mnemonicParsing="false" onAction="#cancel" text="CANCELAR" textFill="#2a50d1">
+                           <font>
+                              <Font name="Broadway" size="13.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <Label layoutX="115.0" layoutY="54.0" text="Mover carpetas/archivos" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="37.0" layoutY="102.0" text="Carpeta/archivo a mover" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="37.0" layoutY="150.0" text="Destino" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox blendMode="MULTIPLY" layoutX="270.0" layoutY="109.0" prefWidth="150.0" />
+                  <ComboBox blendMode="MULTIPLY" layoutX="270.0" layoutY="157.0" prefWidth="150.0" />
+                  <Line endX="240.4000244140625" layoutX="220.0" layoutY="229.0" startX="-194.80001831054688" />
+                  <Button fx:id="guardarCambios12" blendMode="MULTIPLY" layoutX="197.0" layoutY="198.0" mnemonicParsing="false" onAction="#confirmMove" prefHeight="23.0" prefWidth="93.0" text="MOVER" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <ImageView fitHeight="42.0" fitWidth="41.0" layoutX="172.0" layoutY="452.0" onMouseClicked="#remove" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/remove.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="42.0" fitWidth="36.0" layoutX="221.0" layoutY="452.0" onMouseClicked="#copy" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/copy.png" />
+               </image>
+            </ImageView>
+            <Pane fx:id="copyPane" layoutX="330.0" layoutY="66.0" prefHeight="400.0" prefWidth="486.0" visible="false">
+               <children>
+                  <Label layoutX="204.0" layoutY="14.0" text="COPIAR" textFill="#2a50d1">
+                     <font>
+                        <Font name="Britannic Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="27.0" layoutY="104.0" text="Tipo de copiado" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="27.0" layoutY="155.0" text="Archvivo/directorio a copiar" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="27.0" layoutY="215.0" text="Ruta destino" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox blendMode="MULTIPLY" layoutX="192.0" layoutY="101.0" prefHeight="25.0" prefWidth="266.0" />
+                  <TextField blendMode="MULTIPLY" layoutX="275.0" layoutY="152.0" prefHeight="25.0" prefWidth="183.0" />
+                  <TextField blendMode="MULTIPLY" layoutX="192.0" layoutY="212.0" prefHeight="25.0" prefWidth="266.0" />
+                  <Button blendMode="MULTIPLY" layoutX="162.0" layoutY="274.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" text="COPIAR" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
          </children>
