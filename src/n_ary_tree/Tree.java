@@ -63,18 +63,23 @@ public class Tree {
     public void delete(Node n){
         String p = "";
         if(n.getValue() instanceof Filee){
-         p = memory.memoryHandler.getSimulationPath()+pathListToStr(getPath(n))+".txt";
+         p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n));
         }else{
-            p =memory.memoryHandler.getSimulationPath()+ pathListToStr(getPath(n));
+            p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
            File f = new File(p);
-           if (f.delete())
+           if (f.delete()){
+               System.err.println(p);
                 System.out.println("El fichero ha sido borrado satisfactoriamente");
-            else
+           }else{
+               System.err.println(p);
                 System.out.println("El fichero no puede ser borrado");
+           }
+           
     }
     public void removeAux(Node n)
     {
+        System.err.println(n.value.getName());
         if(n.getValue() instanceof Filee) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
@@ -82,7 +87,7 @@ public class Tree {
          }
         if(n.getValue() instanceof Folder) {
             for (Node childs : n.getChildren()) {
-                removeAux(n);
+                removeAux(childs);
             }
             delete(n);
         } 
