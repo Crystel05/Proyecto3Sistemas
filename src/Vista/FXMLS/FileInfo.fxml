@@ -50,27 +50,27 @@
             <Font name="Broadway" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="nombreArchivo" alignment="TOP_RIGHT" layoutX="219.0" layoutY="74.0" prefHeight="19.0" prefWidth="282.0">
+      <Label fx:id="fileName" alignment="TOP_RIGHT" layoutX="219.0" layoutY="74.0" prefHeight="19.0" prefWidth="282.0">
          <font>
             <Font name="Broadway" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="extensionArchivo" alignment="TOP_RIGHT" layoutX="219.0" layoutY="128.0" prefHeight="19.0" prefWidth="282.0">
+      <Label fx:id="fileExt" alignment="TOP_RIGHT" layoutX="219.0" layoutY="128.0" prefHeight="19.0" prefWidth="282.0">
          <font>
             <Font name="Broadway" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="fechaCreacionArchivo" alignment="TOP_RIGHT" layoutX="220.0" layoutY="182.0" prefHeight="19.0" prefWidth="282.0">
+      <Label fx:id="creationDate" alignment="TOP_RIGHT" layoutX="220.0" layoutY="182.0" prefHeight="19.0" prefWidth="282.0">
          <font>
             <Font name="Broadway" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="frchsaModificacionArchivo" alignment="TOP_RIGHT" layoutX="220.0" layoutY="236.0" prefHeight="19.0" prefWidth="282.0">
+      <Label fx:id="modificationDate" alignment="TOP_RIGHT" layoutX="220.0" layoutY="236.0" prefHeight="19.0" prefWidth="282.0">
          <font>
             <Font name="Broadway" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="tamano" alignment="TOP_RIGHT" layoutX="220.0" layoutY="290.0" prefHeight="19.0" prefWidth="282.0">
+      <Label fx:id="size" alignment="TOP_RIGHT" layoutX="220.0" layoutY="290.0" prefHeight="19.0" prefWidth="282.0">
          <font>
             <Font name="Broadway" size="16.0" />
          </font>

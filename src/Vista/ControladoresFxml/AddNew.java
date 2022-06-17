@@ -10,11 +10,15 @@ public class AddNew {
         Node source = (Node) event.getSource();
         Stage stageActual = (Stage) source.getScene().getWindow();
         stageActual.close();
+
+        //llamar función para crear archivo
     }
 
     public void createDirectory(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stageActual = (Stage) source.getScene().getWindow();
         stageActual.close();
+
+        //llamar función para crear directorio
     }
 }

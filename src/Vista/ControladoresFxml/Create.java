@@ -6,12 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 public class Create {
+
+    @FXML
+    private TextField diskSize;
+
+    @FXML
+    private TextField sectorSize;
 
     @FXML
     void create(ActionEvent event) throws IOException {
@@ -26,5 +33,7 @@ public class Create {
         stage.setResizable(false);
         stage.setScene(new Scene(root));
         stage.show();
+
+        //llamar función para crear el disco
     }
 }
