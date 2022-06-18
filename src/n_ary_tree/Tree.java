@@ -99,7 +99,50 @@ public class Tree {
         System.err.println(n.value.getName());
         removeAux(n);
         
-        
+    }
+    
+    public ArrayList getFileAux(Node actual){
+        ArrayList<Node> list =  new ArrayList<>();
+         if (actual.getValue() instanceof Filee){
+             list.add(actual);
+         }
+         for (Node node : actual.getChildren()) {
+             list.addAll(getFileAux(node));
+         }
+         return list;
+    }
+    
+    public ArrayList getFiles(Node actual){
+        return getFileAux(actual);
+    }
+    
+    public ArrayList getFolderAux(Node actual){
+        ArrayList<Node> list =  new ArrayList<>();
+         if (actual.getValue() instanceof Folder){
+             list.add(actual);
+         }
+         for (Node node : actual.getChildren()) {
+             list.addAll(getFolderAux(node));
+         }
+         return list;
+    }
+    public ArrayList getFolders(Node actual){
+        return getFolderAux(actual);
+    }
+    
+    public ArrayList findAuxx(Node actual ,String name){
+        ArrayList<Node> list =  new ArrayList<>();
+        if (actual.getValue().getName().equals(name)){
+            list.add(actual);
+        }
+        for (Node node : actual.getChildren()) {
+            list.addAll(findAuxx(node, name));
+        }
+        return list;
+    }
+    
+    public ArrayList find(String name){
+        return findAuxx(root, name);
     }
     
     public ArrayList<String> pathStrToList(String pPath)
