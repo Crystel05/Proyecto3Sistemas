@@ -1,6 +1,6 @@
 package Vista.ControladoresFxml;
 
-import Controlador.Contoller;
+import Controlador.Controller;
 import Modelo.CopyTypesEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 
 public class MainWindow implements Initializable {
 
-    Contoller contoller = new Contoller();
+    Controller controller = new Controller();
 
     //File variables
 
@@ -240,11 +240,11 @@ public class MainWindow implements Initializable {
     @FXML
     public void remove(MouseEvent event){
         String fileName = treeView.getSelectionModel().getSelectedItem().toString();
-        if (contoller.deleteFile(fileName)){
-            //escribir o ventana de confirmación
-        }else{
-            //mandar error
-        }
+//        if (controller.deleteFile(fileName)){
+//            //escribir o ventana de confirmación
+//        }else{
+//            //mandar error
+//        }
     }
 
     //Create files/directories

@@ -6,7 +6,6 @@
 package n_ary_tree;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +22,7 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("root"));
-        File directorio = new File(memory.memoryHandler.getSimulationPath() + "/root");
+        java.io.File directorio = new java.io.File(memory.memoryHandler.getSimulationPath() + "/root");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio raiz creado"); 
@@ -62,12 +61,12 @@ public class Tree {
     }
     public void delete(Node n){
         String p = "";
-        if(n.getValue() instanceof Filee){
+        if(n.getValue() instanceof File){
          p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n));
         }else{
             p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
-           File f = new File(p);
+           java.io.File f = new java.io.File(p);
            if (f.delete()){
                System.err.println(p);
                 System.out.println("El fichero ha sido borrado satisfactoriamente");
@@ -80,7 +79,7 @@ public class Tree {
     public void removeAux(Node n)
     {
         System.err.println(n.value.getName());
-        if(n.getValue() instanceof Filee) {
+        if(n.getValue() instanceof File) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
            
@@ -103,7 +102,7 @@ public class Tree {
     
     public ArrayList getFileAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
-         if (actual.getValue() instanceof Filee){
+         if (actual.getValue() instanceof File){
              list.add(actual);
          }
          for (Node node : actual.getChildren()) {
@@ -165,7 +164,7 @@ public class Tree {
     }
     
     public void createDirectory(String path){
-        File directorio = new File(path);
+        java.io.File directorio = new java.io.File(path);
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -175,10 +174,11 @@ public class Tree {
             }
         }
     }
+
     public void createFile(String path,String content)
     {
         try {
-            File file = new File(path);
+            java.io.File file = new java.io.File(path);
             // Si el archivo no existe es creado
             if (!file.exists()) {
                 file.createNewFile();
@@ -191,6 +191,7 @@ public class Tree {
             e.printStackTrace();
         }
     }
+
     public Node insert(Element newNodeElement, Node location)
     {
         String path = memory.memoryHandler.getSimulationPath();
@@ -204,8 +205,8 @@ public class Tree {
         if(newNodeElement instanceof Folder){
             createDirectory(path);
         }
-        if(newNodeElement instanceof Filee){
-            createFile(path, ((Filee) newNodeElement).getData());
+        if(newNodeElement instanceof File){
+            createFile(path, ((File) newNodeElement).getData());
         }
         //New node
         Node aux = new Node(newNodeElement,location);

@@ -1,7 +1,6 @@
-import java.io.File;
 import java.util.ArrayList;
 import memory.memoryHandler;
-import n_ary_tree.Filee;
+import n_ary_tree.File;
 import n_ary_tree.Folder;
 import n_ary_tree.Node;
 import n_ary_tree.Tree;
@@ -15,7 +14,7 @@ public class Main {
         //Set memory data
         memoryHandler.setData(10, 10);
 
-        File directorio = new File(memoryHandler.getSimulationPath());
+        java.io.File directorio = new java.io.File(memoryHandler.getSimulationPath());
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -34,7 +33,7 @@ public class Main {
         a.add("Carpeta1");
         Node c = arbol.getNode(a);
 
-        Filee fil = new Filee("file1", "texto");
+        File fil = new File("file1", "texto");
         ArrayList<Integer> sects = new ArrayList<>();
         sects.add(1);
         sects.add(2);
