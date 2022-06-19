@@ -45,6 +45,6 @@ public class Main {
         sects.add(2);
         fil.setSectors(sects);
         arbol.insert(fil, c);
-        arbol.remove("root");
+//        arbol.remove("root");
     }
 }
