@@ -31,9 +31,9 @@ public class Disco {
     
     public void createVirtualDisk(int sectors, int sectorSize) {
         try {
-            String path = "src/main/java/files/virtualDisk.txt";
+            this.disponibles = sectors;
+            String path = "./virtualDisk.txt";
             File file = new File(path);
-            
             if (!file.exists()) {
                 file.createNewFile();
             }

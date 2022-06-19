@@ -189,10 +189,10 @@ public class Tree {
         Integer currentSize = content.length();
         if(disco.getDisponibles() >= currentSize) {
             try {
-                String finalPath = path ;
+                String finalPath = path +".txt";
                 System.out.println(finalPath);
                 java.io.File file = new java.io.File(finalPath);
-
+                
                 if (!file.exists()) {
                     file.createNewFile();
                 }
@@ -210,8 +210,9 @@ public class Tree {
         }
     }
 
-    public Node insert(Element newNodeElement, Node location)
+    public Node insert(Element newNodeElement, Node location,Disco disk)
     {
+        disco=disk;
         String path = memory.memoryHandler.getSimulationPath();
         ArrayList<String> AuxPath =getPath(location);
         for (String str : AuxPath) {
