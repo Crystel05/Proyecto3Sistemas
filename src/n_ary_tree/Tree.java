@@ -78,8 +78,16 @@ public class Tree {
             java.io.File file = new java.io.File(pToMove);
             String targetDirectory = pDestiny;
             boolean ret = file.renameTo(new java.io.File(targetDirectory+ file.getName())); 
+            if (ret ){
+                Node parent = toMove.getParent();
+                List<Node> l =  parent.getChildren();
+                l.remove(toMove);
+                parent.setChildren(l);
+                
+                toMove.setParent(destiny);
+                destiny.addChild(toMove);
+            }
             return  ret;
-            
         }
         return false;
     }
