@@ -13,6 +13,14 @@ public class Disco {
     private Integer tamanio;
     private Integer disponibles;
 
+    public Integer getDisponibles() {
+        return disponibles;
+    }
+
+    public void setDisponibles(Integer disponibles) {
+        this.disponibles = disponibles;
+    }
+
     public Integer getTamanio() {
         return tamanio;
     }

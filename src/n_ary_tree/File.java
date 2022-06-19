@@ -20,6 +20,30 @@ public class File extends Element{
     private LocalDate fechaModificacion;
     private Integer tamanio;
 
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public LocalDate getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDate fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public Integer getTamanio() {
+        return tamanio;
+    }
+
+    public void setTamanio(Integer tamanio) {
+        this.tamanio = tamanio;
+    }
+
     public File(String name, String pData) {
         super(name);
         this.sectors = new ArrayList<>();
