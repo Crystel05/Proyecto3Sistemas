@@ -288,7 +288,7 @@ public class MainWindow implements Initializable {
                 height = 10;
                 width = 15;
             }
-            if (node.getValue().getClass().equals(n_ary_tree.File.class)){
+            if (node.getValue().getClass().equals(n_ary_tree.Filee.class)){
                 path = "src/Vista/Imagenes/fileIcon.png";
                 height = 17;
                 width = 13;
@@ -319,8 +319,8 @@ public class MainWindow implements Initializable {
             Collections.reverse(path);
             System.out.println(path);
 
-            if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)){
-                n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
+            if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.Filee.class)){
+                n_ary_tree.Filee file = (n_ary_tree.Filee) controller.getMyFileSystem().getNode(path).getValue();
                 seePane(paneFilePreview);
                 filePreviewTA.setText(controller.getContent(file));
             }

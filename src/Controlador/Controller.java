@@ -32,7 +32,7 @@ public class Controller {
     public void insertFile(String name, String content, ArrayList<String> locationPath)
     {
         Node location = myFileSystem.getNode(locationPath);
-        File newNodeElement = new File(name, content);
+        Filee newNodeElement = new Filee(name, content);
         myFileSystem.insert(newNodeElement, location);
     }
     
@@ -47,7 +47,7 @@ public class Controller {
         for (Node n: myFileSystem.getRoot().getChildren()) {
             Folder f1_sub1 = new Folder("Carpeta1");
             myFileSystem.insert(f1_sub1, n);
-            File file = new File("File 1", "Esto es una prueba de contenido");
+            Filee file = new Filee("File 1", "Esto es una prueba de contenido");
             myFileSystem.insert(file, n.getChildren().get(0));
         }
     }
@@ -84,7 +84,7 @@ public class Controller {
         return myFileSystem.find(name);
     }
 
-    public String getContent(File file) {
+    public String getContent(Filee file) {
         return file.getData();
     }
 
