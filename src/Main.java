@@ -35,7 +35,7 @@ public class Main {
         arbol.insert(f, arbol.getRoot());
 
         ArrayList<String> a = new ArrayList<>();
-        a.add("root");
+        a.add("My File System");
         a.add("Carpeta1");
         Node c = arbol.getNode(a);
 
@@ -45,6 +45,20 @@ public class Main {
         sects.add(2);
         fil.setSectors(sects);
         arbol.insert(fil, c);
+        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");pF.add("file1");
+        ArrayList<String>pd = new ArrayList<>();pd.add("My File System");
+        arbol.moveTo(arbol.getNode(pF), arbol.getNode(pd));
+                
+              /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
+		String targetDirectory = "./Simulacion File System/root/";
+                java.io.File fk = new java.io.File("./Simulacion File System/root/file1.txt");
+		fk.delete();
+                if (file.renameTo(new java.io.File(targetDirectory+ file.getName()))) {
+			System.out.println("File is moved to " + targetDirectory);
+		} else {
+			System.out.println("Failed");
+                }*/
+        
 //        arbol.remove("root");
     }
 }

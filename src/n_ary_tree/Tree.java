@@ -24,7 +24,7 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("My File System"));
-        java.io.File directorio = new java.io.File(memory.memoryHandler.getSimulationPath() + "/root");
+        java.io.File directorio = new java.io.File(memory.memoryHandler.getSimulationPath() + "/My File System");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio raiz creado"); 
@@ -34,14 +34,14 @@ public class Tree {
         }
     }
  
-    private ArrayList<String> getPath(Node pNode){
+    public ArrayList<String> getPath(Node pNode){
         ArrayList<String> path = new ArrayList<>();
         Node aux = pNode;
         while(aux != root){
             path.add(0,aux.getValue().getName());
             aux = aux.getParent();
         }
-        path.add(0,"root");
+        path.add(0,"My File System");
         return path;
     }
     
@@ -63,12 +63,25 @@ public class Tree {
     
     public boolean moveTo(Node toMove, Node destiny)
     {
-        if(destiny.getValue() instanceof File)
-        {
-        
-        
+        if(destiny.getValue() instanceof File){return false;}
+        if (toMove.getValue() instanceof File){
+            ArrayList<String>pathToMove = getPath(toMove);
+            String pToMove = pathListToStr(pathToMove);
+            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+            System.out.println("Path to move = "+ pToMove);
+            ArrayList<String>pathDestiny = getPath(destiny);
+            String pDestiny = pathListToStr(pathDestiny);
+            pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+            System.out.println("Destiny = "+ pDestiny);
+            
+            //Mover
+            java.io.File file = new java.io.File(pToMove);
+            String targetDirectory = pDestiny;
+            boolean ret = file.renameTo(new java.io.File(targetDirectory+ file.getName())); 
+            return  ret;
+            
         }
-        return true;
+        return false;
     }
     
     public void delete(Node n){

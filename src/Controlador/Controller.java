@@ -65,8 +65,10 @@ public class Controller {
     }
     
     public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
-    
-        return false;
+        Node ToMove = myFileSystem.getNode(nodePath);
+        Node destiny = myFileSystem.getNode(destinyPath);
+        boolean ret = myFileSystem.moveTo(ToMove, destiny);
+        return ret;
     }
     public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath){
     
