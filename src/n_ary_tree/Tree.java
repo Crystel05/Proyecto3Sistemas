@@ -61,6 +61,16 @@ public class Tree {
         return Aux;
     }
     
+    public boolean moveTo(Node toMove, Node destiny)
+    {
+        if(destiny.getValue() instanceof File)
+        {
+        
+        
+        }
+        return true;
+    }
+    
     public void delete(Node n){
         if (n!=root){
         Node parent = n.getParent();
@@ -70,7 +80,7 @@ public class Tree {
         }
         
         String p = "";
-        if(n.getValue() instanceof Filee){
+        if(n.getValue() instanceof File){
          p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
         }else{
             p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
@@ -89,7 +99,7 @@ public class Tree {
     private void removeAux(Node n)
     {
         System.err.println(n.getValue().getName());
-        if(n.getValue() instanceof Filee) {
+        if(n.getValue() instanceof File) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
            
@@ -113,7 +123,7 @@ public class Tree {
     
     private ArrayList<Node> getFileAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
-         if (actual.getValue() instanceof Filee){
+         if (actual.getValue() instanceof File){
              list.add(actual);
          }
          for (Node node : actual.getChildren()) {
@@ -238,8 +248,8 @@ public class Tree {
         if(newNodeElement instanceof Folder){
             createDirectory(path);
         }
-        if(newNodeElement instanceof Filee){
-            createFile(newNodeElement.getName(), ((Filee) newNodeElement).getData(),path);
+        if(newNodeElement instanceof File){
+            createFile(newNodeElement.getName(), ((File) newNodeElement).getData(),path);
         }
         //New node
         Node aux = new Node(newNodeElement,location);
