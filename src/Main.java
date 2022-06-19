@@ -1,5 +1,6 @@
-import Modelo.Disk;
+import Modelo.Disco;
 import java.util.ArrayList;
+import Modelo.Disk;
 import memory.memoryHandler;
 import n_ary_tree.Filee;
 import n_ary_tree.Folder;
@@ -24,15 +25,15 @@ public class Main {
                 System.out.println("Error al crear directorio");
             }
         }
-        Disk disco = new Disk();
-        disco.createVirtualDisk(100, 100);
+        Disk disk = Disk.getInstance();
+        disk.createVirtualDisk(100, 100);
         
-        disco.setSize(100*100);
+        disk.setSize(100*100);
         
         memoryHandler.setData(100, 100);
         Tree arbol = new Tree();
         Folder f = new Folder("Carpeta1");
-        arbol.insert(f, arbol.getRoot(), disco);
+        arbol.insert(f, arbol.getRoot());
 
         ArrayList<String> a = new ArrayList<>();
         a.add("root");
@@ -44,7 +45,7 @@ public class Main {
         sects.add(1);
         sects.add(2);
         fil.setSectors(sects);
-        arbol.insert(fil, c, disco);
+        arbol.insert(fil, c);
         //arbol.remove("root/Carpeta1");
     }
 }

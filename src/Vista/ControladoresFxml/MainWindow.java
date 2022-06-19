@@ -23,10 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import n_ary_tree.Folder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +61,15 @@ public class MainWindow implements Initializable {
 
     @FXML
     private TextField destiny;
+
+    @FXML
+    private RadioButton directorioRB;
+
+    @FXML
+    private RadioButton archivoRB;
+
+    @FXML
+    private Label errorCopy;
 
     //Move variables
 
@@ -117,6 +123,14 @@ public class MainWindow implements Initializable {
     //Copy functionalities
 
     @FXML
+    public void radioButtonSelectedFile(ActionEvent event){
+        directorioRB.setSelected(false);
+    }
+
+    @FXML public void radioButtonSelectedDirectory(ActionEvent event){
+        archivoRB.setSelected(false);
+    }
+    @FXML
     public void copy(MouseEvent event) {
         seePane(copyPane);
         ObservableList<String> types = FXCollections.observableArrayList();
@@ -127,35 +141,76 @@ public class MainWindow implements Initializable {
     }
 
     @FXML
-    public void openFile(MouseEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Archivo a copiar");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-
-        Node source = (Node) event.getSource();
-        Stage stageActual = (Stage) source.getScene().getWindow();
-
-        File selectedFile = fileChooser.showOpenDialog(stageActual);
-
-        if (copiesTypesCB.getSelectionModel().getSelectedItem() != null) {
-            if (copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum())
-                    || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL)) {
-                fileChooser.setInitialDirectory(new File("../../Modelo")); //revisar
-            } else {
-                copiesTypesCB.getSelectionModel().getSelectedItem();
-            }
+    public void file_dirToCopy(MouseEvent event){
+        if (archivoRB.isSelected()){
+            openFile(event);
         }
-
+        if (directorioRB.isSelected()){
+            openDirectory(event, false);
+        }
     }
 
     @FXML
-    public void openDirectory(MouseEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Ruta destino");
-        Node source = (Node) event.getSource();
-        Stage stageActual = (Stage) source.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stageActual);
+    public void destinyPath(MouseEvent event){
+        openDirectory(event, true);
+    }
+
+    public void openFile(MouseEvent event) {
+        if (copiesTypesCB.getSelectionModel().getSelectedItem() != null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Archivo a copiar");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+            if (copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum())
+                    || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())) {
+                fileChooser.setInitialDirectory(new File("Simulacion File System/root"));
+            }
+            Node source = (Node) event.getSource();
+            Stage stageActual = (Stage) source.getScene().getWindow();
+
+            File selectedFile = fileChooser.showOpenDialog(stageActual);
+            String path = selectedFile.getAbsolutePath();
+            fileToCopy.setText(path);
+        }
+    }
+
+    public void openDirectory(MouseEvent event, boolean isDestiny) {
+        if (!copiesTypesCB.getSelectionModel().getSelectedItem().isEmpty()) {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Ruta destino");
+            if ((!isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum()))
+                    || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())
+                    || (isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.REAL_VIRTUAL.getTypeEnum()))) {
+                directoryChooser.setInitialDirectory(new File("Simulacion File System/root"));
+            }
+            Node source = (Node) event.getSource();
+            Stage stageActual = (Stage) source.getScene().getWindow();
+            File selectedDirectory = directoryChooser.showDialog(stageActual);
+            String path = selectedDirectory.getAbsolutePath();
+            if (isDestiny)
+                destiny.setText(path);
+            else
+                fileToCopy.setText(path);
+        }
+    }
+
+    @FXML
+    public void copyFiles(ActionEvent event){
+        if (!fileToCopy.getText().isEmpty() && !destiny.getText().isEmpty()) {
+            boolean isDirectory = directorioRB.isSelected();
+            String copyType = copiesTypesCB.getSelectionModel().getSelectedItem();
+            switch (copyType) {
+                case "Ruta virtual a ruta real":
+                    controller.copyVirtualReal(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    break;
+                case "Ruta real a ruta virtual":
+                    controller.copyRealVirtual(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    break;
+                case "Ruta virtual a ruta virtual":
+                    controller.copyVirtualVirtual(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    break;
+            }
+        }
     }
 
     //Move functionalities
@@ -261,6 +316,14 @@ public class MainWindow implements Initializable {
             ArrayList<String> path = new ArrayList<>();
             path.add(item.getValue());
             getPath(item, path);
+            Collections.reverse(path);
+            System.out.println(path);
+
+            if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)){
+                n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
+                seePane(paneFilePreview);
+                filePreviewTA.setText(controller.getContent(file));
+            }
         }
     }
 

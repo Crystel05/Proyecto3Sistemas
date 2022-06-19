@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
@@ -99,7 +100,7 @@
                   <Image url="@../Imagenes/buscar.png" />
                </image>
             </ImageView>
-            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0">
+            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0" visible="false">
                <children>
                   <ImageView fitHeight="370.0" fitWidth="486.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -195,36 +196,51 @@
                   <Image url="@../Imagenes/copy.png" />
                </image>
             </ImageView>
-            <Pane fx:id="copyPane" layoutX="330.0" layoutY="66.0" prefHeight="400.0" prefWidth="486.0" visible="false">
+            <Pane fx:id="copyPane" layoutX="330.0" layoutY="66.0" prefHeight="400.0" prefWidth="560.0">
                <children>
-                  <Label layoutX="204.0" layoutY="14.0" text="COPIAR" textFill="#2a50d1">
+                  <Label layoutX="241.0" layoutY="14.0" text="COPIAR" textFill="#2a50d1">
                      <font>
                         <Font name="Britannic Bold" size="23.0" />
                      </font>
                   </Label>
-                  <Label layoutX="27.0" layoutY="104.0" text="Tipo de copiado" textFill="#2a50d1">
+                  <Label layoutX="14.0" layoutY="104.0" text="Tipo de copiado" textFill="#2a50d1">
                      <font>
                         <Font name="Broadway" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="27.0" layoutY="155.0" text="Archvivo/directorio a copiar" textFill="#2a50d1">
+                  <Label layoutX="15.0" layoutY="155.0" text="Archvivo/directorio a copiar" textFill="#2a50d1">
                      <font>
                         <Font name="Broadway" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="27.0" layoutY="215.0" text="Ruta destino" textFill="#2a50d1">
+                  <Label fx:id="errorCopy" layoutX="90.0" layoutY="328.0" prefHeight="19.0" prefWidth="379.0" text="No se pudo copiar el archivo porque ya existía" textFill="RED" visible="false">
                      <font>
                         <Font name="Broadway" size="15.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="copiesTypesCB" blendMode="MULTIPLY" layoutX="192.0" layoutY="101.0" prefHeight="25.0" prefWidth="266.0" />
-                  <TextField fx:id="fileToCopy" blendMode="MULTIPLY" layoutX="275.0" layoutY="152.0" onMouseClicked="#openFile" prefHeight="25.0" prefWidth="183.0" />
-                  <TextField fx:id="destiny" blendMode="MULTIPLY" layoutX="192.0" layoutY="212.0" onMouseClicked="#openDirectory" prefHeight="25.0" prefWidth="266.0" />
-                  <Button blendMode="MULTIPLY" layoutX="162.0" layoutY="274.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" text="COPIAR" textFill="#2a50d1">
+                  <TextField fx:id="fileToCopy" blendMode="MULTIPLY" editable="false" layoutX="254.0" layoutY="152.0" onMouseClicked="#file_dirToCopy" prefHeight="25.0" prefWidth="197.0" />
+                  <TextField fx:id="destiny" blendMode="MULTIPLY" editable="false" layoutX="192.0" layoutY="212.0" onMouseClicked="#destinyPath" prefHeight="25.0" prefWidth="266.0" />
+                  <Button blendMode="MULTIPLY" layoutX="205.0" layoutY="264.0" mnemonicParsing="false" onAction="#copyFiles" prefHeight="26.0" prefWidth="149.0" text="COPIAR" textFill="#2a50d1">
                      <font>
                         <Font name="Broadway" size="14.0" />
                      </font>
                   </Button>
+                  <RadioButton fx:id="archivoRB" blendMode="MULTIPLY" layoutX="460.0" layoutY="167.0" mnemonicParsing="false" onAction="#radioButtonSelectedFile" text="Archivo" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="12.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="directorioRB" blendMode="MULTIPLY" layoutX="460.0" layoutY="146.0" mnemonicParsing="false" onAction="#radioButtonSelectedDirectory" text="Directorio" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="12.0" />
+                     </font>
+                  </RadioButton>
+                  <Label layoutX="15.0" layoutY="215.0" prefWidth="107.0" text="Ruta destino" textFill="#2a50d1">
+                     <font>
+                        <Font name="Broadway" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </children>

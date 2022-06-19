@@ -1,6 +1,5 @@
 package Controlador;
 import java.util.ArrayList;
-import memory.memoryHandler;
 import n_ary_tree.*;
 import Modelo.Disk;
 
@@ -9,12 +8,12 @@ public class Controller {
     private final Disk disk = Disk.getInstance();
     private Tree myFileSystem;
     private static Controller controller;
+
     public static Controller getInstance(){
         if (controller == null){
             controller = new Controller();
-        }      
+        }
         return controller;
-        
     }
     public Disk getDisk() {
         return disk;
@@ -47,9 +46,9 @@ public class Controller {
 
         for (Node n: myFileSystem.getRoot().getChildren()) {
             Folder f1_sub1 = new Folder("Carpeta1");
-            myFileSystem.insert(f1_sub1, n, disk);
-            Filee file = new Filee("File 1", ".");
-            myFileSystem.insert(file, n.getChildren().get(0), disk);
+            myFileSystem.insert(f1_sub1, n);
+            File file = new File("File 1", "Esto es una prueba de contenido");
+            myFileSystem.insert(file, n.getChildren().get(0));
         }
     }
     
@@ -73,8 +72,24 @@ public class Controller {
         return myFileSystem.getNodes();
     }
     
-    public ArrayList find(String name){//todos los nodos que tienen un element con el nomber recibido
+    public ArrayList find(String name){//todos los nodos que tienen un element con el nombre recibido
         return myFileSystem.find(name);
     }
-    
+
+    public String getContent(File file) {
+        return file.getData();
+    }
+
+    //Copy
+    public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
+
+    }
+
+    public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory){
+
+    }
+
+    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
+
+    }
 }

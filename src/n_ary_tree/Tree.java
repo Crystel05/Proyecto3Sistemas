@@ -120,7 +120,7 @@ public class Tree {
          return list;
     }
     
-    public ArrayList getFiles(){
+    public ArrayList<Node> getFiles(){
         return getFileAux(root);
     }
     
@@ -135,11 +135,11 @@ public class Tree {
          return list;
     }
     
-    public ArrayList getFolders(){
+    public ArrayList<Node> getFolders(){
         return getFolderAux(root);
     }
     
-    public ArrayList getNodesAux(Node actual){
+    public ArrayList<Node> getNodesAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
         list.add(actual);
          for (Node node : actual.getChildren()) {
@@ -148,11 +148,11 @@ public class Tree {
          return list;
     }
     
-    public ArrayList getNodes(){
+    public ArrayList<Node> getNodes(){
         return getNodesAux(root);
     }
     
-    public ArrayList findAuxx(Node actual ,String name){
+    public ArrayList<Node> findAux(Node actual ,String name){
         ArrayList<Node> list =  new ArrayList<>();
         if (actual.getValue().getName().equals(name)){
             list.add(actual);
