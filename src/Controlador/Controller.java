@@ -57,7 +57,7 @@ public class Controller {
         Node node = myFileSystem.getNode(filePath);
         
         if (node != null){
-            myFileSystem.delete(node);
+            myFileSystem.remove(myFileSystem.pathListToStr(filePath));
             return true;
         }
         return false;

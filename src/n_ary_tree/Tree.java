@@ -62,25 +62,27 @@ public class Tree {
     }
     
     public void delete(Node n){
+        if (n!=root){
         Node parent = n.getParent();
-        ArrayList<Node> l = (ArrayList<Node>) parent.getChildren();
+        List<Node> l =  parent.getChildren();
         l.remove(n);
         parent.setChildren(l);
+        }
         
         String p = "";
         if(n.getValue() instanceof File){
-         p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n));
+         p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
         }else{
             p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
-           java.io.File f = new java.io.File(p);
-           if (f.delete()){
-               System.err.println(p);
-                System.out.println("El fichero ha sido borrado satisfactoriamente");
-           }else{
-               System.err.println(p);
-                System.out.println("El fichero no puede ser borrado");
-           }
+        java.io.File f = new java.io.File(p);
+        if (f.delete()){
+            System.out.println(p);
+            System.out.println("El fichero ha sido borrado satisfactoriamente");
+        }else{
+            System.out.println(p);
+            System.out.println("El fichero no puede ser borrado");
+        }
            
     }
     
