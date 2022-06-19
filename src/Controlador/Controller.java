@@ -12,8 +12,9 @@ public class Controller {
     public static Controller getInstance(){
         if (controller == null){
             controller = new Controller();
+        }      
         return controller;
-        }
+        
     }
     public Disk getDisk() {
         return disk;
@@ -29,29 +30,35 @@ public class Controller {
         myFileSystem = new Tree();
         prueba();
     }
-
+    public void insertFile(String name, String content, ArrayList<String> locationPath)
+    {
+        Node location = myFileSystem.getNode(locationPath);
+        Filee newNodeElement = new Filee(name, content);
+        myFileSystem.insert(newNodeElement, location, disk);
+    }
+    
     private void prueba(){
         Folder f = new Folder("Carpeta1");
-        myFileSystem.insert(f, myFileSystem.getRoot());
+        myFileSystem.insert(f, myFileSystem.getRoot(), disk);
         Folder f1 = new Folder("Carpeta2");
-        myFileSystem.insert(f1, myFileSystem.getRoot());
+        myFileSystem.insert(f1, myFileSystem.getRoot(), disk);
         Folder f2 = new Folder("Carpeta3");
-        myFileSystem.insert(f2, myFileSystem.getRoot());
+        myFileSystem.insert(f2, myFileSystem.getRoot(), disk);
 
         for (Node n: myFileSystem.getRoot().getChildren()) {
             Folder f1_sub1 = new Folder("Carpeta1");
-            myFileSystem.insert(f1_sub1, n);
-            File file = new File("File 1", ".");
-            myFileSystem.insert(file, n.getChildren().get(0));
+            myFileSystem.insert(f1_sub1, n, disk);
+            Filee file = new Filee("File 1", ".");
+            myFileSystem.insert(file, n.getChildren().get(0), disk);
         }
     }
     
     public boolean delete(ArrayList filePath){  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
-        Node node = treeController.getNode(filePath);
+        Node node = myFileSystem.getNode(filePath);
         
         if (node != null){
-            treeController.delete(node);
+            myFileSystem.delete(node);
             return true;
         }
         return false;
@@ -59,15 +66,15 @@ public class Controller {
     }
     
     public ArrayList getDirectories(){ //Lista nodos que son directorios
-        return treeController.getFolders();
+        return myFileSystem.getFolders();
     }
     
     public ArrayList getEverythingNodes(){ // Todos los nodos
-        return treeController.getNodes();
+        return myFileSystem.getNodes();
     }
     
     public ArrayList find(String name){//todos los nodos que tienen un element con el nomber recibido
-        return treeController.find(name);
+        return myFileSystem.find(name);
     }
     
 }

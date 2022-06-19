@@ -43,7 +43,7 @@ public class Disk {
         try {
             String path = "src/Files/Disk/virtualDisk.txt";
             File file = new File(path);
-            
+            this.freeSpace = sectors;
             if (!file.exists()) {
                 file.createNewFile();
             }

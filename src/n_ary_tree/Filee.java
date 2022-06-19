@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Alexander
  */
-public class File extends Element{
+public class Filee extends Element{
 
     private String data;
     private ArrayList<Integer> sectors;
@@ -44,7 +44,7 @@ public class File extends Element{
         this.tamanio = tamanio;
     }
 
-    public File(String name, String pData) {
+    public Filee(String name, String pData) {
         super(name);
         this.sectors = new ArrayList<>();
         this.data = pData;
