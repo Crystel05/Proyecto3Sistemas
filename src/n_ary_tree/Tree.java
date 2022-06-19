@@ -5,7 +5,7 @@
  */
 package n_ary_tree;
 
-import Modelo.Disco;
+import Modelo.Disk;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -17,13 +17,14 @@ import java.util.List;
  * @author Alexander
  */
 public class Tree {
-    Node root;
-    Disco disco = new Disco();
- 
+    private Node root;
+
+    private final Disk disk = Disk.getInstance();
+
     public Tree()
     {
         root = new Node();
-        root.setValue(new Folder("root"));
+        root.setValue(new Folder("My File System"));
         java.io.File directorio = new java.io.File(memory.memoryHandler.getSimulationPath() + "/root");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
@@ -34,7 +35,7 @@ public class Tree {
         }
     }
  
-    ArrayList<String> getPath(Node pNode){
+    private ArrayList<String> getPath(Node pNode){
         ArrayList<String> path = new ArrayList<>();
         Node aux = pNode;
         while(aux != root){
@@ -52,7 +53,7 @@ public class Tree {
         }
         for (int i = 1; i < path.size(); i++) {
             for (Node node : Aux.getChildren()) {
-                if(path.get(i).equals(node.value.getName())){
+                if(path.get(i).equals(node.getValue().getName())){
                     Aux = node;
                 }    
             }
@@ -84,9 +85,9 @@ public class Tree {
            
     }
     
-    public void removeAux(Node n)
+    private void removeAux(Node n)
     {
-        System.err.println(n.value.getName());
+        System.err.println(n.getValue().getName());
         if(n.getValue() instanceof File) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
@@ -104,12 +105,12 @@ public class Tree {
     {
         ArrayList<String> path = pathStrToList(pPath);
         Node n = getNode(path);
-        System.err.println(n.value.getName());
+        System.err.println(n.getValue().getName());
         removeAux(n);
         
     }
     
-    public ArrayList getFileAux(Node actual){
+    private ArrayList<Node> getFileAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
          if (actual.getValue() instanceof File){
              list.add(actual);
@@ -124,7 +125,7 @@ public class Tree {
         return getFileAux(root);
     }
     
-    public ArrayList getFolderAux(Node actual){
+    private ArrayList<Node> getFolderAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
          if (actual.getValue() instanceof Folder){
              list.add(actual);
@@ -158,13 +159,13 @@ public class Tree {
             list.add(actual);
         }
         for (Node node : actual.getChildren()) {
-            list.addAll(findAuxx(node, name));
+            list.addAll(findAux(node, name));
         }
         return list;
     }
     
-    public ArrayList find(String name){
-        return findAuxx(root, name);
+    public ArrayList<Node> find(String name){
+        return findAux(root, name);
     }
     
     public ArrayList<String> pathStrToList(String pPath)
@@ -200,7 +201,7 @@ public class Tree {
 
     public void createFile(String name, String content, String path) {
         Integer currentSize = content.length();
-        if(disco.getDisponibles() >= currentSize) {
+        if(disk.getFreeSpace() >= currentSize) {
             try {
                 String finalPath = path +".txt";
                 System.out.println(finalPath);

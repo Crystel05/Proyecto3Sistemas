@@ -99,7 +99,7 @@
                   <Image url="@../Imagenes/buscar.png" />
                </image>
             </ImageView>
-            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0" visible="false">
+            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0">
                <children>
                   <ImageView fitHeight="370.0" fitWidth="486.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -123,9 +123,9 @@
                   <Image url="@../Imagenes/move.png" />
                </image>
             </ImageView>
-            <Pane fx:id="movePane" layoutX="330.0" layoutY="66.0" prefHeight="406.0" prefWidth="486.0">
+            <Pane fx:id="movePane" layoutX="330.0" layoutY="66.0" prefHeight="406.0" prefWidth="486.0" visible="false">
                <children>
-                  <Pane fx:id="renamePane" layoutX="7.0" layoutY="229.0" prefHeight="175.0" prefWidth="473.0">
+                  <Pane fx:id="renamePane" layoutX="7.0" layoutY="229.0" prefHeight="175.0" prefWidth="473.0" visible="false">
                      <children>
                         <Label layoutX="22.0" layoutY="14.0" text="En la carpeta de destino existe un archivo/carpeta" textFill="#ff0c04">
                            <font>

@@ -5,6 +5,8 @@
  */
 package n_ary_tree;
 
+import javafx.scene.control.TreeItem;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ import java.util.List;
  * @author Alexander
  */
 public class Node {
-    Element value; //para almacenar cualquier valor
-    Node parent;//variable nodo padre
+    private Element value; //para almacenar cualquier valor
+    private Node parent;//variable nodo padre
     private List<Node> children = new LinkedList<>();
     
     //Creando los constructores

@@ -7,15 +7,15 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="238.0" prefWidth="535.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.Create">
+<AnchorPane prefHeight="257.0" prefWidth="535.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.Create">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="238.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="535.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="257.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="535.0" />
       <Label layoutX="194.0" layoutY="28.0" text="FILE SYSTEM" textFill="#2a50d1">
          <font>
             <Font name="Britannic Bold" size="25.0" />
          </font>
       </Label>
-      <TextField fx:id="diskSize" blendMode="MULTIPLY" layoutX="298.0" layoutY="83.0">
+      <TextField fx:id="sectorsAmount" blendMode="MULTIPLY" layoutX="298.0" layoutY="83.0">
          <font>
             <Font name="Broadway" size="12.0" />
          </font>
@@ -40,5 +40,10 @@
             <Font name="Broadway" size="13.0" />
          </font>
       </Button>
+      <Label fx:id="error" layoutX="127.0" layoutY="221.0" prefHeight="22.0" prefWidth="294.0" text="Indique la cantidad de sectores y su tamaño" textFill="RED" visible="false">
+         <font>
+            <Font name="Bodoni MT" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

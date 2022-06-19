@@ -16,5 +16,5 @@
 }
 
 .tree-cell .tree-disclosure-node .arrow {
--fx-background-color: blue;
+    -fx-background-color: null;
 }

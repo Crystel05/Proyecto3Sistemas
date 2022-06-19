@@ -8,32 +8,42 @@ import java.io.FileWriter;
  *
  * @author yerli
  */
-public class Disco {
+public class Disk {
+
+    private static Disk disk;
+
+    public static Disk getInstance(){
+        if (disk == null){
+            disk = new Disk();
+        }
+        return disk;
+    }
     
-    private Integer tamanio;
-    private Integer disponibles;
+    private Integer size;
+    private Integer freeSpace;
 
-    public Integer getDisponibles() {
-        return disponibles;
+    public Integer getFreeSpace() {
+        return freeSpace;
     }
 
-    public void setDisponibles(Integer disponibles) {
-        this.disponibles = disponibles;
+    public void setFreeSpace(Integer freeSpace) {
+        this.freeSpace = freeSpace;
     }
 
-    public Integer getTamanio() {
-        return tamanio;
+    public Integer getSize() {
+        return size;
     }
 
-    public void setTamanio(Integer tamanio) {
-        this.tamanio = tamanio;
+    public void setSize(Integer size) {
+        this.size = size;
+        setFreeSpace(size);
     }
     
     public void createVirtualDisk(int sectors, int sectorSize) {
         try {
-            this.disponibles = sectors;
-            String path = "./virtualDisk.txt";
+            String path = "src/Files/Disk/virtualDisk.txt";
             File file = new File(path);
+            
             if (!file.exists()) {
                 file.createNewFile();
             }
