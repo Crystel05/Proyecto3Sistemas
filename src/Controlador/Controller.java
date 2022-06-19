@@ -64,6 +64,14 @@ public class Controller {
           
     }
     
+    public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
+    
+        return false;
+    }
+    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath){
+    
+        return false;
+    }
     public ArrayList getDirectories(){ //Lista nodos que son directorios
         return myFileSystem.getFolders();
     }
