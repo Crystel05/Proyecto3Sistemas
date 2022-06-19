@@ -1,5 +1,6 @@
 package Vista.ControladoresFxml;
 
+import Controlador.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,8 @@ public class Create {
 
     @FXML
     private TextField sectorSize;
+    
+    private Controller controller;
 
     @FXML
     void create(ActionEvent event) throws IOException {
@@ -35,5 +38,6 @@ public class Create {
         stage.show();
 
         //llamar función para crear el disco
+        controller.createVirtualDisk(Integer.parseInt(diskSize.getText()), Integer.parseInt(sectorSize.getText()));
     }
 }

@@ -1,18 +1,14 @@
 package Controlador;
-import n_ary_tree.Tree;
+import Modelo.Disco;
 
 public class Controller {
 
-    Tree treeController = new Tree();
-
-//    public boolean deleteFile(String fileName){
-//        //mapeo para obtener el nodo a base del nombre o la ruta
-//        Node node = mapeo();
-//        return treeController.delete(node);
-//    }
-//
-//    public void createFile(){
-//        //funcion Yerling
-//    }
+    Disco disco = new Disco();
+    
+    public void createVirtualDisk(int sectors, int sectorSize) {
+        disco.createVirtualDisk(sectors, sectorSize);
+        
+        disco.setTamanio(sectors*sectorSize);
+    }
 
 }

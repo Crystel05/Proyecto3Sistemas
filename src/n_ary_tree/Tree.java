@@ -5,6 +5,7 @@
  */
 package n_ary_tree;
 
+import Modelo.Disco;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public class Tree {
     Node root;
+    Disco disco = new Disco();
  
     public Tree()
     {
@@ -32,7 +34,6 @@ public class Tree {
         }
     }
  
-    
     ArrayList<String> getPath(Node pNode){
         ArrayList<String> path = new ArrayList<>();
         Node aux = pNode;
@@ -59,6 +60,7 @@ public class Tree {
         
         return Aux;
     }
+    
     public void delete(Node n){
         String p = "";
         if(n.getValue() instanceof File){
@@ -76,6 +78,7 @@ public class Tree {
            }
            
     }
+    
     public void removeAux(Node n)
     {
         System.err.println(n.value.getName());
@@ -91,6 +94,7 @@ public class Tree {
             delete(n);
         } 
     }
+    
     public void remove(String pPath)
     {
         ArrayList<String> path = pathStrToList(pPath);
@@ -125,6 +129,7 @@ public class Tree {
          }
          return list;
     }
+    
     public ArrayList getFolders(Node actual){
         return getFolderAux(actual);
     }
@@ -175,21 +180,32 @@ public class Tree {
         }
     }
 
-    public void createFile(String path,String content)
-    {
-        try {
-            java.io.File file = new java.io.File(path);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                file.createNewFile();
+    public void createFile(String name, String content, String path) {
+        Integer currentSize = content.length();
+        
+        if(disco.getDisponibles() >= currentSize) {
+            try {
+                String finalPath = path + name + ".txt";
+                System.out.println(finalPath);
+                java.io.File file = new java.io.File(finalPath);
+
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+
+                FileWriter fw = new FileWriter(file);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(content);
+                bw.close();
+                
+                // modificar el disco
             }
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(content);
-            bw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
+        
     }
 
     public Node insert(Element newNodeElement, Node location)

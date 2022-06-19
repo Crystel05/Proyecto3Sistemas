@@ -5,6 +5,7 @@
  */
 package n_ary_tree;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +16,9 @@ public class File extends Element{
 
     private String data;
     private ArrayList<Integer> sectors;
+    private LocalDate fechaCreacion;
+    private LocalDate fechaModificacion;
+    private Integer tamanio;
 
     public File(String name, String pData) {
         super(name);
