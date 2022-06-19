@@ -17,7 +17,7 @@ public class Controller {
         memoryHandler.setData(sectors, sectorSize);
     }
     
-    public boolean deleteFile(ArrayList filePath){
+    public boolean delete(ArrayList filePath){  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
         Node node = treeController.getNode(filePath);
         
@@ -28,6 +28,17 @@ public class Controller {
         return false;
           
     }
-
-
+    
+    public ArrayList getDirectories(){ //Lista nodos que son directorios
+        return treeController.getFolders();
+    }
+    
+    public ArrayList getEverythingNodes(){ // Todos los nodos
+        return treeController.getNodes();
+    }
+    
+    public ArrayList find(String name){//todos los nodos que tienen un element con el nomber recibido
+        return treeController.find(name);
+    }
+    
 }
