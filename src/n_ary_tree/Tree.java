@@ -63,33 +63,77 @@ public class Tree {
     
     public boolean moveTo(Node toMove, Node destiny)
     {
-        if(destiny.getValue() instanceof File){return false;}
-        if (toMove.getValue() instanceof File){
-            ArrayList<String>pathToMove = getPath(toMove);
-            String pToMove = pathListToStr(pathToMove);
+        if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
+        ArrayList<String>pathToMove = getPath(toMove);
+        String pToMove = pathListToStr(pathToMove);
+        if(toMove.getValue() instanceof File)
             pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove+".txt";
-            System.out.println("Path to move = "+ pToMove);
-            ArrayList<String>pathDestiny = getPath(destiny);
-            String pDestiny = pathListToStr(pathDestiny);
-            pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
-            System.out.println("Destiny = "+ pDestiny);
-            
-            //Mover
-            java.io.File file = new java.io.File(pToMove);
-            String targetDirectory = pDestiny;
-            boolean ret = file.renameTo(new java.io.File(targetDirectory+ file.getName())); 
-            if (ret ){
-                Node parent = toMove.getParent();
-                List<Node> l =  parent.getChildren();
-                l.remove(toMove);
-                parent.setChildren(l);
-                
-                toMove.setParent(destiny);
-                destiny.addChild(toMove);
-            }
-            return  ret;
+        if(toMove.getValue() instanceof Folder)
+            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove;
+
+        ArrayList<String>pathDestiny = getPath(destiny);
+        String pDestiny = pathListToStr(pathDestiny);
+        pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+
+        //Mover
+        java.io.File file = new java.io.File(pToMove);
+        String targetDirectory = pDestiny;
+        boolean ret = file.renameTo(new java.io.File(targetDirectory+ file.getName())); 
+        if (ret ){
+            Node parent = toMove.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(toMove);
+            parent.setChildren(l);
+
+            toMove.setParent(destiny);
+            destiny.addChild(toMove);
         }
-        return false;
+        return  ret;
+        
+    }
+    public boolean moveOverwriting(Node toMove, Node destiny){
+        if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
+        ArrayList<String>pathToMove = getPath(toMove);
+        String pToMove = pathListToStr(pathToMove);
+        if(toMove.getValue() instanceof File)
+            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+        if(toMove.getValue() instanceof Folder)
+            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove;
+
+        System.out.println("Path to move = "+ pToMove);
+        ArrayList<String>pathDestiny = getPath(destiny);
+        String pDestiny = pathListToStr(pathDestiny);
+        pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+        System.out.println("Destiny = "+ pDestiny);
+        //Delete el existente
+        String p = "";
+        if(toMove.getValue() instanceof File){
+            p =  pDestiny+toMove.getValue().getName()+".txt";
+        }else{
+            p=pDestiny+toMove.getValue().getName();
+        }
+        java.io.File fk= new java.io.File(p);
+        
+        
+        if(fk.exists()){
+            fk.delete();
+            System.out.println("Reemplazado ");
+        }
+
+        //Mover
+        java.io.File file = new java.io.File(pToMove);
+        String targetDirectory = pDestiny;
+        boolean ret = file.renameTo(new java.io.File(targetDirectory+ file.getName())); 
+        if (ret ){
+            Node parent = toMove.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(toMove);
+            parent.setChildren(l);
+
+            toMove.setParent(destiny);
+            destiny.addChild(toMove);
+        }
+        return  ret;
     }
     
     public void delete(Node n){

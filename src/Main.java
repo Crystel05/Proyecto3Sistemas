@@ -33,7 +33,8 @@ public class Main {
         Tree arbol = new Tree();
         Folder f = new Folder("Carpeta1");
         arbol.insert(f, arbol.getRoot());
-
+        Folder f2 = new Folder("Carpeta2");
+        arbol.insert(f2, arbol.getRoot());
         ArrayList<String> a = new ArrayList<>();
         a.add("My File System");
         a.add("Carpeta1");
@@ -45,9 +46,9 @@ public class Main {
         sects.add(2);
         fil.setSectors(sects);
         arbol.insert(fil, c);
-        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");pF.add("file1");
-        ArrayList<String>pd = new ArrayList<>();pd.add("My File System");
-        arbol.moveTo(arbol.getNode(pF), arbol.getNode(pd));
+        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");
+        ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
+        arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
                 
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";
