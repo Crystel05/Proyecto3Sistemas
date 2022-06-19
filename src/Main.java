@@ -12,7 +12,7 @@ public class Main {
         System.out.println("HOLA 2");
 
         //Set memory data
-        memoryHandler.setData(10, 10);
+        memoryHandler.setData(100, 100);
 
         java.io.File directorio = new java.io.File(memoryHandler.getSimulationPath());
         if (!directorio.exists()) {
@@ -39,6 +39,6 @@ public class Main {
         sects.add(2);
         fil.setSectors(sects);
         arbol.insert(fil, c);
-        arbol.remove("root/Carpeta1");
+        //arbol.remove("root/Carpeta1");
     }
 }

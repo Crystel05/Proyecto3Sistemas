@@ -62,6 +62,11 @@ public class Tree {
     }
     
     public void delete(Node n){
+        Node parent = n.getParent();
+        ArrayList<Node> l = (ArrayList<Node>) parent.getChildren();
+        l.remove(n);
+        parent.setChildren(l);
+        
         String p = "";
         if(n.getValue() instanceof File){
          p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n));
@@ -182,10 +187,9 @@ public class Tree {
 
     public void createFile(String name, String content, String path) {
         Integer currentSize = content.length();
-        
         if(disco.getDisponibles() >= currentSize) {
             try {
-                String finalPath = path + name + ".txt";
+                String finalPath = path ;
                 System.out.println(finalPath);
                 java.io.File file = new java.io.File(finalPath);
 
@@ -204,8 +208,6 @@ public class Tree {
                 e.printStackTrace();
             }
         }
-        
-        
     }
 
     public Node insert(Element newNodeElement, Node location)
@@ -222,7 +224,7 @@ public class Tree {
             createDirectory(path);
         }
         if(newNodeElement instanceof File){
-            createFile(path, ((File) newNodeElement).getData());
+            createFile(newNodeElement.getName(), ((File) newNodeElement).getData(),path);
         }
         //New node
         Node aux = new Node(newNodeElement,location);
