@@ -1,8 +1,7 @@
-import Modelo.Disco;
 import java.util.ArrayList;
 import Modelo.Disk;
 import memory.memoryHandler;
-import n_ary_tree.Filee;
+import n_ary_tree.File;
 import n_ary_tree.Folder;
 import n_ary_tree.Node;
 import n_ary_tree.Tree;
@@ -40,7 +39,7 @@ public class Main {
         a.add("Carpeta1");
         Node c = arbol.getNode(a);
 
-        Filee fil = new Filee("file1", "texto");
+        File fil = new File("file1", "texto");
         ArrayList<Integer> sects = new ArrayList<>();
         sects.add(1);
         sects.add(2);

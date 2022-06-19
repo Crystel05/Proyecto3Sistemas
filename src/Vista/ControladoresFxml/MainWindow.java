@@ -288,7 +288,7 @@ public class MainWindow implements Initializable {
                 height = 10;
                 width = 15;
             }
-            if (node.getValue().getClass().equals(n_ary_tree.Filee.class)){
+            if (node.getValue().getClass().equals(n_ary_tree.File.class)){
                 path = "src/Vista/Imagenes/fileIcon.png";
                 height = 17;
                 width = 13;

@@ -68,7 +68,7 @@ public class Tree {
         parent.setChildren(l);
         
         String p = "";
-        if(n.getValue() instanceof Filee){
+        if(n.getValue() instanceof File){
          p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n));
         }else{
             p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
@@ -87,7 +87,7 @@ public class Tree {
     private void removeAux(Node n)
     {
         System.err.println(n.getValue().getName());
-        if(n.getValue() instanceof Filee) {
+        if(n.getValue() instanceof File) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
            
@@ -111,7 +111,7 @@ public class Tree {
     
     private ArrayList<Node> getFileAux(Node actual){
         ArrayList<Node> list =  new ArrayList<>();
-         if (actual.getValue() instanceof Filee){
+         if (actual.getValue() instanceof File){
              list.add(actual);
          }
          for (Node node : actual.getChildren()) {
@@ -158,13 +158,13 @@ public class Tree {
             list.add(actual);
         }
         for (Node node : actual.getChildren()) {
-            list.addAll(findAuxx(node, name));
+            list.addAll(findAux(node, name));
         }
         return list;
     }
     
     public ArrayList<Node> find(String name){
-        return findAuxx(root, name);
+        return findAux(root, name);
     }
     
     public ArrayList<String> pathStrToList(String pPath)
@@ -223,9 +223,8 @@ public class Tree {
         }
     }
 
-    public Node insert(Element newNodeElement, Node location, Disk pdisk)
+    public Node insert(Element newNodeElement, Node location)
     {
-        disk = pdisk;
         String path = memory.memoryHandler.getSimulationPath();
         ArrayList<String> AuxPath =getPath(location);
         for (String str : AuxPath) {
@@ -237,8 +236,8 @@ public class Tree {
         if(newNodeElement instanceof Folder){
             createDirectory(path);
         }
-        if(newNodeElement instanceof Filee){
-            createFile(newNodeElement.getName(), ((Filee) newNodeElement).getData(),path);
+        if(newNodeElement instanceof File){
+            createFile(newNodeElement.getName(), ((File) newNodeElement).getData(),path);
         }
         //New node
         Node aux = new Node(newNodeElement,location);

@@ -32,17 +32,17 @@ public class Controller {
     public void insertFile(String name, String content, ArrayList<String> locationPath)
     {
         Node location = myFileSystem.getNode(locationPath);
-        Filee newNodeElement = new Filee(name, content);
-        myFileSystem.insert(newNodeElement, location, disk);
+        File newNodeElement = new File(name, content);
+        myFileSystem.insert(newNodeElement, location);
     }
     
     private void prueba(){
         Folder f = new Folder("Carpeta1");
-        myFileSystem.insert(f, myFileSystem.getRoot(), disk);
+        myFileSystem.insert(f, myFileSystem.getRoot());
         Folder f1 = new Folder("Carpeta2");
-        myFileSystem.insert(f1, myFileSystem.getRoot(), disk);
+        myFileSystem.insert(f1, myFileSystem.getRoot());
         Folder f2 = new Folder("Carpeta3");
-        myFileSystem.insert(f2, myFileSystem.getRoot(), disk);
+        myFileSystem.insert(f2, myFileSystem.getRoot());
 
         for (Node n: myFileSystem.getRoot().getChildren()) {
             Folder f1_sub1 = new Folder("Carpeta1");
