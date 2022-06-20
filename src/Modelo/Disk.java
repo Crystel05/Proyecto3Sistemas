@@ -41,6 +41,14 @@ public class Disk {
         this.freeSpace = freeSpace -1;
     }
 
+    public void addFreeSpace() {
+        this.freeSpace = freeSpace +1;
+    }
+
+    public void setSectors(List<Integer> sectors) {
+        this.sectors = sectors;
+    }
+
     public String getPathActualDisk() {
         return pathActualDisk;
     }

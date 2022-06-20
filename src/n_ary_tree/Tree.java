@@ -186,6 +186,12 @@ public class Tree {
             while(texto != null) {
                 texto = br.readLine();
                 if (sectors.contains(count)){
+                    //Remover de la lista de sectores de disco
+                    List<Integer> sects = disk.getSectors();
+                    sects.remove(count);
+                    disk.setSectors(sects);
+                    disk.addFreeSpace();
+                    //Escribir la linea de ceros en el disco
                     for (int i = 0; i < memory.MemoryHandler.lenghtXSector; i++) {
                         body+="0";
                     }
