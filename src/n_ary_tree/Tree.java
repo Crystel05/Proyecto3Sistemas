@@ -164,6 +164,7 @@ public class Tree {
         if(toMove.getValue() instanceof File){newName+=".txt";}
         boolean ret = file.renameTo(new java.io.File(targetDirectory+ newName)); 
         if (ret ){
+            toMove.getValue().setName(newName);
             Node parent = toMove.getParent();
             List<Node> l =  parent.getChildren();
             l.remove(toMove);
