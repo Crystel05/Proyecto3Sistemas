@@ -9,19 +9,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import Modelo.MoveTypes;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
-import java.io.IOException;
+
 import java.util.Scanner;
 
 public class Controller {
 
     private final Disk disk = Disk.getInstance();
-    private CopyController copyController = new CopyController();
+    private final CopyController copyController = new CopyController();
     private Tree myFileSystem;
     private static Controller controller;
     private TreeItem<String> currentItem;
@@ -32,9 +33,6 @@ public class Controller {
             controller = new Controller();
         }
         return controller;
-    }
-    public Disk getDisk() {
-        return disk;
     }
 
     public Tree getMyFileSystem() {
@@ -53,10 +51,6 @@ public class Controller {
 
     public void setCurrentItem(TreeItem<String> currentItem) {
         this.currentItem = currentItem;
-    }
-
-    public TreeView<String> getTreeView() {
-        return treeView;
     }
 
     public void setTreeView(TreeView<String> treeView) {
@@ -153,30 +147,32 @@ public class Controller {
         }
     }
     
-    public boolean delete(ArrayList filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
+    public void delete(ArrayList<String> filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
         Node node = myFileSystem.getNode(filePath);
         
         if (node != null){
             myFileSystem.remove(myFileSystem.pathListToStr(filePath));
-            return true;
         }
-        return false;
     }
 
-    public void move(String originPath, String destinyPath, boolean overwrite) throws IOException {
+    public void move(String originPath, String destinyPath, MoveTypes type, String newName) throws IOException {
         ArrayList<String> oriPath = myFileSystem.pathStrToList(originPath);
         ArrayList<String> destPath = myFileSystem.pathStrToList(destinyPath);
-        if (overwrite) {
-            if (moveOverwriting(oriPath, destPath))
-                fillTree();
-            else
-                System.out.println("error sobreescribiendo");
-        }else{
-            if (moveTo(oriPath, destPath))
-                fillTree();
+        switch (type){
+            case NORMAL:
+                if (moveTo(oriPath, destPath))
+                    fillTree();
+                break;
+            case RENAME:
+                if (moveRename(oriPath, destPath, newName))
+                    fillTree();
+                break;
+            case OVERWRITE:
+                if (moveOverwriting(oriPath, destPath))
+                    fillTree();
+                break;
         }
-
     }
     
     private boolean moveTo(ArrayList<String> nodePath, ArrayList<String> destinyPath){
@@ -187,36 +183,21 @@ public class Controller {
     private boolean moveOverwriting(ArrayList<String> nodePath, ArrayList<String> destinyPath) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
-        boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
-        return ret;
+        return myFileSystem.moveOverwriting(ToMove, destiny);
     }
     
-    public boolean moveRename(ArrayList nodePath, ArrayList destinyPath,String newName) throws IOException{
+    public boolean moveRename(ArrayList<String> nodePath, ArrayList<String> destinyPath,String newName) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
-        boolean ret = myFileSystem.moveRename(ToMove, destiny,newName);
-        return ret;
+        return myFileSystem.moveRename(ToMove, destiny,newName);
     }
     
-    public ArrayList getDirectories(){ //Lista nodos que son directorios
-        return myFileSystem.getFolders();
-    }
-    
-    public ArrayList getEverythingNodes(){ // Todos los nodos
-        return myFileSystem.getNodes();
-    }
-    
-    public ArrayList find(String name){//todos los nodos que tienen un element con el nombre recibido
+    public ArrayList<Node> find(String name){//todos los nodos que tienen un element con el nombre recibido
         return myFileSystem.find(name);
     }
-    
-    public ArrayList listDir(ArrayList actualNodePath){//todos los nodos partiendo desde actual
-        Node actual = myFileSystem.getNode(actualNodePath);
-        return myFileSystem.getNodesAux(actual);
-    }
-    
+
     public String getContent(File file) {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         
         try {
             java.io.File diskFile = new java.io.File(disk.getPathActualDisk());
@@ -229,7 +210,7 @@ public class Controller {
                 if (sectors.contains(lineNumber)){
                     String line = myReader.nextLine();
                     line = line.replace("0", "");
-                    content = content + line;
+                    content.append(line);
                 } else {
                     myReader.nextLine();
                 }
@@ -240,7 +221,7 @@ public class Controller {
             e.printStackTrace();
         }
     
-        return content;
+        return content.toString();
     }
     
     public ArrayList<String> getProperties(File file) {

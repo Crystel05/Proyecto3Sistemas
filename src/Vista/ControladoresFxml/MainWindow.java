@@ -2,6 +2,7 @@ package Vista.ControladoresFxml;
 
 import Controlador.Controller;
 import Modelo.CopyTypesEnum;
+import Modelo.MoveTypes;
 import Vista.DragWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -304,7 +305,7 @@ public class MainWindow implements Initializable, DragWindow {
             if (verifyEquals()) {
                 renamePane.setVisible(true);
             }else{
-                controller.move(moveOriginTF.getText(), destMoveTF.getText(), false);
+                controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.NORMAL, null);
             }
         }
     }
@@ -323,22 +324,14 @@ public class MainWindow implements Initializable, DragWindow {
     @FXML
     public void moveRename(ActionEvent event) throws IOException {
         if (!newName.getText().isEmpty()){
-            String[] destPath = destMoveTF.getText().replace("\\","/").split("/");
-            String name = newName.getText();
-            destPath[destPath.length-1] = name;
-            String path = "";
-            for (int i = 0; i < destPath.length-1; i++){
-                path = path + destPath[i] + "/";
-            }
-            path = path + name  + ".txt";
-            controller.move(moveOriginTF.getText(), path, false);
+            controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.RENAME, newName.getText());
         }
     }
 
     @FXML
     public void replace(ActionEvent event) throws IOException {
         if (!moveOriginTF.getText().isEmpty() && !destMoveTF.getText().isEmpty()){
-            controller.move(moveOriginTF.getText(), destMoveTF.getText(), true);
+            controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.OVERWRITE, null);
             renamePane.setVisible(false);
         }
     }
