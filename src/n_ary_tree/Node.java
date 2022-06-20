@@ -60,7 +60,14 @@ public class Node {
     }
     
     /********************************************************/
-    
+    public Node getChild(String name){
+        for (Node node : children) {
+            if(node.getValue().getName().equals(name)){
+                return node;
+            }
+        }
+        return null;
+    }
     public void addChild(Node pChild) {
         this.children.add(pChild);
     }

@@ -39,7 +39,13 @@ public class Main {
         a.add("My File System");
         a.add("Carpeta1");
         Node c = arbol.getNode(a);
-
+        ArrayList<String> a2 = new ArrayList<>();
+        a2.add("My File System");
+        a2.add("Carpeta2");
+        Node c2 = arbol.getNode(a2);
+        Folder f1 = new Folder("Carpeta1");
+        arbol.insert(f1,c2 );
+        
         File fil = new File("file1", "texto");
         ArrayList<Integer> sects = new ArrayList<>();
         sects.add(1);

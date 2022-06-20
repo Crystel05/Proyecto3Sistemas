@@ -114,9 +114,9 @@ public class Tree {
         }
         java.io.File fk= new java.io.File(p);
         
-        
         if(fk.exists()){
-            fk.delete();
+            Node n = destiny.getChild(toMove.getValue().getName());
+            delete(n);
             System.out.println("Reemplazado ");
         }
 
