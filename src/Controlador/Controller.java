@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Controller {
 

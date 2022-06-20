@@ -52,7 +52,7 @@ public class Main {
         ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");
         ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
         //arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
-        arbol.remove("My File System/Carpeta1/file1");        
+       // arbol.remove("My File System/Carpeta1/file1");        
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";
                 java.io.File fk = new java.io.File("./Simulacion File System/root/file1.txt");

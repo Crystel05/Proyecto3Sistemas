@@ -268,6 +268,20 @@ public class Tree {
         return getNodesAux(root);
     }
     
+    public ArrayList<Node> findAuxOnlyFiles(Node actual ,String name){
+
+        ArrayList<Node> list = new ArrayList<>();
+        if (actual.getValue() instanceof File){
+            if (actual.getValue().getName().equals(name)){
+                list.add(actual);
+            }
+        }
+        for (Node node : actual.getChildren()) {
+            list.addAll(findAuxOnlyFiles(node, name));
+        }
+        return list;
+    }
+    
     public ArrayList<Node> findAux(Node actual ,String name){
 
         ArrayList<Node> list = new ArrayList<>();
@@ -281,6 +295,10 @@ public class Tree {
     }
     
     public ArrayList<Node> find(String name){
+        if (name.endsWith(".txt")){
+            String str = name.substring(0, name.length()-4);
+            return findAuxOnlyFiles(root, str);
+        }
         return findAux(root, name);
     }
     
