@@ -3,11 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="179.0" prefWidth="535.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.AddNew">
+<AnchorPane fx:id="paneDir" prefHeight="179.0" prefWidth="535.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.AddNew">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="179.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="535.0" />
       <Label layoutX="162.0" layoutY="20.0" text="AGREGAR CARPETA" textFill="#2a50d1">
@@ -35,5 +37,10 @@
             <Font name="Broadway" size="15.0" />
          </font>
       </Label>
+      <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="503.0" layoutY="5.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/salir.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

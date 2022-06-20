@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import Modelo.Disk;
 import java.io.IOException;
-import memory.MemoryHandler;
 import n_ary_tree.File;
 import n_ary_tree.Folder;
 import n_ary_tree.Node;
@@ -14,9 +13,8 @@ public class Main {
         System.out.println("HOLA 2");
 
         //Set memory data
-        MemoryHandler.setData(100, 100);
 
-        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath());
+        java.io.File directorio = new java.io.File(Disk.getSimulationPath());
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -29,8 +27,7 @@ public class Main {
         disk.createVirtualDisk(100, 100);
         
         //disk.setSize(100*100);
-        
-        MemoryHandler.setData(100, 100);
+
         Tree arbol = new Tree();
         Folder f = new Folder("Carpeta1");
         arbol.insert(f, arbol.getRoot());

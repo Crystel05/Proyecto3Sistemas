@@ -4,11 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="454.0" prefWidth="571.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.AddNew">
+<AnchorPane fx:id="paneFile" prefHeight="454.0" prefWidth="571.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.AddNew">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="454.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="571.0" />
       <Label layoutX="181.0" layoutY="22.0" text="AGREGAR ARCHIVO" textFill="#2a50d1">
@@ -42,5 +44,10 @@
             <Font name="Broadway" size="15.0" />
          </font>
       </Label>
+      <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="540.0" layoutY="5.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/salir.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

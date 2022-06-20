@@ -224,7 +224,7 @@ public class Tree {
                     disk.setSectors(sects);
                     disk.addFreeSpace();
                     //Escribir la linea de ceros en el disco
-                    for (int i = 0; i < memory.MemoryHandler.lenghtXSector; i++) {
+                    for (int i = 0; i < disk.getSectorSize(); i++) {
                         body+="0";
                     }
                 }else{
@@ -235,6 +235,7 @@ public class Tree {
             java.io.File f = new java.io.File(disk.getPathActualDisk());
             FileWriter fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
+            assert body != null;
             bw.write(body);
             bw.close();
             

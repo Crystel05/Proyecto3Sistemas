@@ -124,6 +124,7 @@ public class Controller {
     //create files
 
     public void insertFile(String name, String content, ArrayList<String> locationPath) {
+        System.out.println(name);
         Node location = myFileSystem.getNode(locationPath);
         File newNodeElement = new File(name, content);
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -162,14 +163,28 @@ public class Controller {
         }
         return false;
     }
+
+    public void move(String originPath, String destinyPath, boolean overwrite) throws IOException {
+        ArrayList<String> oriPath = myFileSystem.pathStrToList(originPath);
+        ArrayList<String> destPath = myFileSystem.pathStrToList(destinyPath);
+        if (overwrite) {
+            if (moveOverwriting(oriPath, destPath))
+                fillTree();
+            else
+                System.out.println("error sobreescribiendo");
+        }else{
+            if (moveTo(oriPath, destPath))
+                fillTree();
+        }
+
+    }
     
-    public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
+    private boolean moveTo(ArrayList<String> nodePath, ArrayList<String> destinyPath){
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
-        boolean ret = myFileSystem.moveTo(ToMove, destiny);
-        return ret;
+        return myFileSystem.moveTo(ToMove, destiny);
     }
-    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath) throws IOException{
+    private boolean moveOverwriting(ArrayList<String> nodePath, ArrayList<String> destinyPath) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
         boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
@@ -242,22 +257,35 @@ public class Controller {
 
     //Copy
     public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
-        copyRealVirtual(pathOrigin, pathDestiny, isDirectory);
+        if (myFileSystem.getNode(myFileSystem.pathStrToList(pathDestiny)).getChildren()
+                .contains(myFileSystem.getNode(myFileSystem.pathStrToList(pathOrigin)))) {
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+            Date date = new Date();
+            String dateToStr = dateFormat.format(date);
+            String[] newNameL = pathOrigin.split("/");
+            String[] newNameSTx = newNameL[newNameL.length-1].split("\\.");
+            String newName = newNameSTx[0] + "_" + dateToStr;
+            copyRealVirtual(pathOrigin, pathDestiny, isDirectory, newName);
+        }else
+            copyRealVirtual(pathOrigin, pathDestiny, isDirectory, null);
     }
 
     public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
         copyController.copy(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory, String newName) throws IOException {
         String[] nameL = pathOrigin.split("/");
         String[] name = nameL[nameL.length - 1].split("\\.");
         String n = name[0];
-
         if (!isDirectory) {
+
             byte[] encoded = Files.readAllBytes(Paths.get(pathOrigin));
             String content = new String(encoded, StandardCharsets.UTF_8);
-            insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
+            if (newName != null)
+                insertFile(newName, content, myFileSystem.pathStrToList(pathDestiny));
+            else
+                insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
         }else{
             insertDirectory(n, myFileSystem.pathStrToList(pathDestiny));
         }
