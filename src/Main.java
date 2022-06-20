@@ -1,21 +1,22 @@
 import java.util.ArrayList;
 import Modelo.Disk;
-import memory.memoryHandler;
+import java.io.IOException;
+import memory.MemoryHandler;
 import n_ary_tree.File;
 import n_ary_tree.Folder;
 import n_ary_tree.Node;
 import n_ary_tree.Tree;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Mishis love");
         System.out.println("HOLA");
         System.out.println("HOLA 2");
 
         //Set memory data
-        memoryHandler.setData(100, 100);
+        MemoryHandler.setData(100, 100);
 
-        java.io.File directorio = new java.io.File(memoryHandler.getSimulationPath());
+        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath());
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -27,9 +28,9 @@ public class Main {
         Disk disk = Disk.getInstance();
         disk.createVirtualDisk(100, 100);
         
-        disk.setSize(100*100);
+        //disk.setSize(100*100);
         
-        memoryHandler.setData(100, 100);
+        MemoryHandler.setData(100, 100);
         Tree arbol = new Tree();
         Folder f = new Folder("Carpeta1");
         arbol.insert(f, arbol.getRoot());
@@ -47,15 +48,11 @@ public class Main {
         arbol.insert(f1,c2 );
         
         File fil = new File("file1", "texto");
-        ArrayList<Integer> sects = new ArrayList<>();
-        sects.add(1);
-        sects.add(2);
-        fil.setSectors(sects);
         arbol.insert(fil, c);
         ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");
         ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
-        arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
-                
+        //arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
+        arbol.remove("My File System/Carpeta1/file1");        
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";
                 java.io.File fk = new java.io.File("./Simulacion File System/root/file1.txt");
@@ -66,6 +63,6 @@ public class Main {
 			System.out.println("Failed");
                 }*/
         
-//        arbol.remove("root");
+        
     }
 }

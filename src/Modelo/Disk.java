@@ -59,6 +59,8 @@ public class Disk {
 
     public void createVirtualDisk(int sectors, int sectorSize) {
         try {
+            memory.MemoryHandler.lenghtXSector = sectorSize;
+            memory.MemoryHandler.numSectors = sectors;
             System.out.println(sectors + "  "+  sectorSize);
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
             Date date = new Date();

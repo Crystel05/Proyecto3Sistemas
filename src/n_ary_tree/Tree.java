@@ -6,10 +6,13 @@
 package n_ary_tree;
 
 import Modelo.Disk;
-import memory.MemoryHandler;
+import java.io.BufferedReader;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +30,7 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("My File System"));
-        java.io.File directorio = new java.io.File(disk.getSimulationPath() + "/My File System");
+        java.io.File directorio = new java.io.File(Disk.getSimulationPath() + "/My File System");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                // System.out.println("Directorio raiz creado");
@@ -71,13 +74,13 @@ public class Tree {
         ArrayList<String>pathToMove = getPath(toMove);
         String pToMove = pathListToStr(pathToMove);
         if(toMove.getValue() instanceof File)
-            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
         if(toMove.getValue() instanceof Folder)
-            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove;
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
 
         ArrayList<String>pathDestiny = getPath(destiny);
         String pDestiny = pathListToStr(pathDestiny);
-        pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
 
         //Mover
         java.io.File file = new java.io.File(pToMove);
@@ -95,20 +98,19 @@ public class Tree {
         return  ret;
         
     }
-    
-    public boolean moveOverwriting(Node toMove, Node destiny){
+    public boolean moveOverwriting(Node toMove, Node destiny) throws IOException{
         if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
         ArrayList<String>pathToMove = getPath(toMove);
         String pToMove = pathListToStr(pathToMove);
         if(toMove.getValue() instanceof File)
-            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
         if(toMove.getValue() instanceof Folder)
-            pToMove = memory.memoryHandler.getSimulationPath()+"/"+pToMove;
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
 
         System.out.println("Path to move = "+ pToMove);
         ArrayList<String>pathDestiny = getPath(destiny);
         String pDestiny = pathListToStr(pathDestiny);
-        pDestiny = memory.memoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
         System.out.println("Destiny = "+ pDestiny);
         //Delete el existente
         String p = "";
@@ -151,9 +153,9 @@ public class Tree {
         
         String p = "";
         if(n.getValue() instanceof File){
-         p = MemoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
+         p = Disk.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
         }else{
-            p = MemoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
+            p = Disk.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
         java.io.File f = new java.io.File(p);
         if (f.delete()){
@@ -166,12 +168,44 @@ public class Tree {
            
     }
     
-    private void removeAux(Node n)
+    private void removeAux(Node n) throws IOException
     {
-        System.err.println(n.getValue().getName());
         if(n.getValue() instanceof File) {
             //TODO: Función para eliminar el archivo de la memoria
             delete(n);
+            BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(disk.getPathActualDisk()));
+            String texto = br.readLine();
+            int count = 0;
+            ArrayList<Integer> sectors = ((File)(n.getValue())).getSectors();
+            String body="";
+            if(!sectors.contains(0)){
+                body = texto;
+            }
+            while(texto != null) {
+                texto = br.readLine();
+                if (sectors.contains(count)){
+                    for (int i = 0; i < memory.MemoryHandler.lenghtXSector; i++) {
+                        body+="0";
+                    }
+                }else{
+                    if(texto!=null)body += "\n"+texto;
+                }
+                count++;
+            }
+            java.io.File f = new java.io.File(disk.getPathActualDisk());
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(body);
+            bw.close();
+            
+        }
+        catch (FileNotFoundException ex) {
+            System.out.println("Error: Fichero de disco no encontrado");
+                ex.printStackTrace();
+        }
+            
            
          }
         if(n.getValue() instanceof Folder) {
@@ -182,7 +216,7 @@ public class Tree {
         } 
     }
     
-    public void remove(String pPath)
+    public void remove(String pPath) throws IOException
     {
         ArrayList<String> path = pathStrToList(pPath);
         Node n = getNode(path);
@@ -235,7 +269,8 @@ public class Tree {
     }
     
     public ArrayList<Node> findAux(Node actual ,String name){
-        ArrayList<Node> list =  new ArrayList<>();
+
+        ArrayList<Node> list = new ArrayList<>();
         if (actual.getValue().getName().equals(name)){
             list.add(actual);
         }

@@ -142,6 +142,8 @@ public class MainWindow implements Initializable, DragWindow {
         types.add(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum());
         types.add(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum());
         copiesTypesCB.setItems(types);
+        fileToCopy.setText("");
+        destiny.setText("");
     }
 
     @FXML
@@ -167,13 +169,13 @@ public class MainWindow implements Initializable, DragWindow {
                     new FileChooser.ExtensionFilter("Text Files", "*.txt"));
             if (copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum())
                     || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())) {
-                fileChooser.setInitialDirectory(new File("Simulacion File System/root"));
+                fileChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
             }
             Node source = (Node) event.getSource();
             Stage stageActual = (Stage) source.getScene().getWindow();
 
             File selectedFile = fileChooser.showOpenDialog(stageActual);
-            String path = selectedFile.getAbsolutePath();
+            String path = selectedFile.getAbsolutePath().replace("\\", "/");;
             fileToCopy.setText(path);
         }
     }
@@ -185,12 +187,13 @@ public class MainWindow implements Initializable, DragWindow {
             if ((!isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum()))
                     || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())
                     || (isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.REAL_VIRTUAL.getTypeEnum()))) {
-                directoryChooser.setInitialDirectory(new File("Simulacion File System/root"));
+                directoryChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
             }
             Node source = (Node) event.getSource();
             Stage stageActual = (Stage) source.getScene().getWindow();
             File selectedDirectory = directoryChooser.showDialog(stageActual);
-            String path = selectedDirectory.getAbsolutePath();
+            String path = selectedDirectory.getAbsolutePath().replace("\\", "/");
+            System.out.println(path);
             if (isDestiny)
                 destiny.setText(path);
             else
@@ -199,7 +202,7 @@ public class MainWindow implements Initializable, DragWindow {
     }
 
     @FXML
-    public void copyFiles(ActionEvent event){
+    public void copyFiles(ActionEvent event) throws IOException {
         if (!fileToCopy.getText().isEmpty() && !destiny.getText().isEmpty()) {
             boolean isDirectory = directorioRB.isSelected();
             String copyType = copiesTypesCB.getSelectionModel().getSelectedItem();
@@ -209,9 +212,11 @@ public class MainWindow implements Initializable, DragWindow {
                     break;
                 case "Ruta real a ruta virtual":
                     controller.copyRealVirtual(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    controller.fillTree();
                     break;
                 case "Ruta virtual a ruta virtual":
                     controller.copyVirtualVirtual(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    controller.fillTree();
                     break;
             }
         }
@@ -226,7 +231,8 @@ public class MainWindow implements Initializable, DragWindow {
 
     @FXML
     public void confirmMove(ActionEvent event) {
-        renamePane.setVisible(true);
+
+        //renamePane.setVisible(true);
     }
 
     @FXML
@@ -238,19 +244,16 @@ public class MainWindow implements Initializable, DragWindow {
 
     @FXML
     void search(MouseEvent event) {
+        filesListSearch.getItems().clear();
+        List<n_ary_tree.Node> foundNodes = controller.find(buscarTF.getText());
         seePane(paneFileList);
-        List<String> foundFiles = new ArrayList<>();
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        fillSearch(foundFiles);
+
+        fillSearch(foundNodes);
     }
 
-    private void fillSearch(List<String> foundFiles) {
-        for (String fileName : foundFiles) {
-            String item = "-> " + fileName;
-            //item = file.getName() + "\t\t" file.getUbicacion()
+    private void fillSearch(List<n_ary_tree.Node> foundFiles) {
+        for (n_ary_tree.Node node : foundFiles) {
+            String item = node.getValue().getName() + "->" + controller.getMyFileSystem().pathListToStr(controller.getMyFileSystem().getPath(node));
             filesListSearch.getItems().add(item);
         }
     }
@@ -270,7 +273,6 @@ public class MainWindow implements Initializable, DragWindow {
     }
 
 
-
     @FXML
     public void selectItem(){
         TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
@@ -280,8 +282,6 @@ public class MainWindow implements Initializable, DragWindow {
                 item.setExpanded(true);
             }
             ArrayList<String> path = controller.getPath(item);
-//            System.out.println(path);
-//            System.out.println(controller.getMyFileSystem().getNode(path).getValue().getName());
             if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)){
                 n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
                 seePane(paneFilePreview);
@@ -292,20 +292,12 @@ public class MainWindow implements Initializable, DragWindow {
         }
     }
 
-    private String getContent(String fileName){
-        return "Esto es una prueba";
-    }
-
     //Remove functionalities
 
     @FXML
-    public void remove(MouseEvent event){
-        String fileName = treeView.getSelectionModel().getSelectedItem().toString();
-//        if (controller.deleteFile(fileName)){
-//            //escribir o ventana de confirmación
-//        }else{
-//            //mandar error
-//        }
+    public void remove(MouseEvent event) throws IOException {
+        controller.delete(controller.getPath(treeView.getSelectionModel().getSelectedItem()));
+        controller.fillTree();
     }
 
     //Create files/directories

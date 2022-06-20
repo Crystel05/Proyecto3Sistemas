@@ -1,6 +1,10 @@
 package Controlador;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,11 +18,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class Controller {
 
     private final Disk disk = Disk.getInstance();
+    private CopyController copyController = new CopyController();
     private Tree myFileSystem;
     private static Controller controller;
     private TreeItem<String> currentItem;
@@ -155,7 +160,7 @@ public class Controller {
         }
     }
     
-    public boolean delete(ArrayList filePath){  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
+    public boolean delete(ArrayList filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
         Node node = myFileSystem.getNode(filePath);
         
@@ -164,7 +169,6 @@ public class Controller {
             return true;
         }
         return false;
-          
     }
     
     public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
@@ -173,7 +177,7 @@ public class Controller {
         boolean ret = myFileSystem.moveTo(ToMove, destiny);
         return ret;
     }
-    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath){
+    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
         boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
@@ -232,16 +236,26 @@ public class Controller {
     }
 
     //Copy
-    public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
-
+    public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        copyRealVirtual(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory){
-
+    public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        copyController.copy(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
+    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        String[] nameL = pathOrigin.split("/");
+        String[] name = nameL[nameL.length - 1].split("\\.");
+        String n = name[0];
 
+        if (!isDirectory) {
+            byte[] encoded = Files.readAllBytes(Paths.get(pathOrigin));
+            String content = new String(encoded, StandardCharsets.UTF_8);
+            insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
+        }else{
+            insertDirectory(n, myFileSystem.pathStrToList(pathDestiny));
+        }
     }
 
 
