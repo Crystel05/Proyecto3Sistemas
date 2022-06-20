@@ -269,7 +269,8 @@ public class Tree {
     }
     
     public ArrayList<Node> findAux(Node actual ,String name){
-        ArrayList<Node> list =  new ArrayList<>();
+
+        ArrayList<Node> list = new ArrayList<>();
         if (actual.getValue().getName().equals(name)){
             list.add(actual);
         }

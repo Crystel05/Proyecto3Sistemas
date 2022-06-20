@@ -93,7 +93,7 @@
             </Label>
             <TextField fx:id="buscarTF" blendMode="MULTIPLY" layoutX="14.0" layoutY="16.0">
                <font>
-                  <Font name="Felix Titling" size="13.0" />
+                  <Font name="Broadway" size="13.0" />
                </font></TextField>
             <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="207.0" layoutY="16.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                <image>

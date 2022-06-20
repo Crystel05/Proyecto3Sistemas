@@ -244,19 +244,16 @@ public class MainWindow implements Initializable, DragWindow {
 
     @FXML
     void search(MouseEvent event) {
+        filesListSearch.getItems().clear();
+        List<n_ary_tree.Node> foundNodes = controller.find(buscarTF.getText());
         seePane(paneFileList);
-        List<String> foundFiles = new ArrayList<>();
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        foundFiles.add("HOLA");
-        fillSearch(foundFiles);
+
+        fillSearch(foundNodes);
     }
 
-    private void fillSearch(List<String> foundFiles) {
-        for (String fileName : foundFiles) {
-            String item = "-> " + fileName;
-            //item = file.getName() + "\t\t" file.getUbicacion()
+    private void fillSearch(List<n_ary_tree.Node> foundFiles) {
+        for (n_ary_tree.Node node : foundFiles) {
+            String item = node.getValue().getName() + "->" + controller.getMyFileSystem().pathListToStr(controller.getMyFileSystem().getPath(node));
             filesListSearch.getItems().add(item);
         }
     }
@@ -298,7 +295,7 @@ public class MainWindow implements Initializable, DragWindow {
     //Remove functionalities
 
     @FXML
-    public void remove(MouseEvent event) throws FileNotFoundException {
+    public void remove(MouseEvent event) throws IOException {
         controller.delete(controller.getPath(treeView.getSelectionModel().getSelectedItem()));
         controller.fillTree();
     }
