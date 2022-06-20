@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
+import java.io.IOException;
 
 public class Controller {
 
@@ -154,7 +155,7 @@ public class Controller {
         }
     }
     
-    public boolean delete(ArrayList filePath){  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
+    public boolean delete(ArrayList filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
         Node node = myFileSystem.getNode(filePath);
         
@@ -172,7 +173,7 @@ public class Controller {
         boolean ret = myFileSystem.moveTo(ToMove, destiny);
         return ret;
     }
-    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath){
+    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
         boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
