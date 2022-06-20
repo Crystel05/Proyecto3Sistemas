@@ -161,7 +161,7 @@ public class Tree {
         //Mover
         java.io.File file = new java.io.File(pToMove);
         String targetDirectory = pDestiny;
-        if(toMove.getValue() instanceof File){newName+=".txt";}
+//        if(toMove.getValue() instanceof File){newName+=".txt";}
         boolean ret = file.renameTo(new java.io.File(targetDirectory+ newName)); 
         if (ret ){
             toMove.getValue().setName(newName);
@@ -178,10 +178,10 @@ public class Tree {
     
     public void delete(Node n){
         if (n!=root){
-        Node parent = n.getParent();
-        List<Node> l =  parent.getChildren();
-        l.remove(n);
-        parent.setChildren(l);
+            Node parent = n.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(n);
+            parent.setChildren(l);
         }
         
         String p = "";
@@ -212,9 +212,9 @@ public class Tree {
             String texto = br.readLine();
             int count = 0;
             ArrayList<Integer> sectors = ((File)(n.getValue())).getSectors();
-            String body="";
+            StringBuilder body= new StringBuilder();
             if(!sectors.contains(0)){
-                body = texto;
+                body = new StringBuilder(texto);
             }
             while(texto != null) {
                 texto = br.readLine();
@@ -226,18 +226,21 @@ public class Tree {
                     disk.addFreeSpace();
                     //Escribir la linea de ceros en el disco
                     for (int i = 0; i < disk.getSectorSize(); i++) {
-                        body+="0";
+                        body.append("0");
                     }
+                    if (sectors.contains(count+1))
+                        body.append("\n");
                 }else{
-                    if(texto!=null)body += "\n"+texto;
+                    if(texto!=null) body.append("\n").append(texto);
                 }
                 count++;
             }
+            System.out.println(count);
             java.io.File f = new java.io.File(disk.getPathActualDisk());
             FileWriter fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
             assert body != null;
-            bw.write(body);
+            bw.write(body.toString());
             bw.close();
             
         }
