@@ -6,11 +6,14 @@
 package n_ary_tree;
 
 import Modelo.Disk;
+import memory.MemoryHandler;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -18,18 +21,18 @@ import java.util.List;
  */
 public class Tree {
     private Node root;
-    private Disk disk = Disk.getInstance();
+    private final Disk disk = Disk.getInstance();
 
     public Tree()
     {
         root = new Node();
         root.setValue(new Folder("My File System"));
-        java.io.File directorio = new java.io.File(memory.memoryHandler.getSimulationPath() + "/My File System");
+        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath() + "/My File System");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
-                System.out.println("Directorio raiz creado"); 
+               // System.out.println("Directorio raiz creado");
             } else {
-                System.out.println("Error al crear el directorio raiz");
+               // System.out.println("Error al crear el directorio raiz");
             }
         }
     }
@@ -45,14 +48,15 @@ public class Tree {
         return path;
     }
     
-    public Node getNode(ArrayList<String> path)
-    {    Node Aux = null;
+    public Node getNode(ArrayList<String> path) {
+        Node Aux = null;
         if (path.size() > 0){
             Aux = root;
         }
         for (int i = 1; i < path.size(); i++) {
             for (Node node : Aux.getChildren()) {
-                if(path.get(i).equals(node.getValue().getName())){
+                String[] s = path.get(i).split("\\.");
+                if(s[0].equals(node.getValue().getName())){
                     Aux = node;
                 }    
             }
@@ -146,17 +150,17 @@ public class Tree {
         
         String p = "";
         if(n.getValue() instanceof File){
-         p = memory.memoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
+         p = MemoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
         }else{
-            p =memory.memoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
+            p = MemoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
         java.io.File f = new java.io.File(p);
         if (f.delete()){
-            System.out.println(p);
-            System.out.println("El fichero ha sido borrado satisfactoriamente");
+//            System.out.println(p);
+//            System.out.println("El fichero ha sido borrado satisfactoriamente");
         }else{
-            System.out.println(p);
-            System.out.println("El fichero no puede ser borrado");
+//            System.out.println(p);
+//            System.out.println("El fichero no puede ser borrado");
         }
            
     }
@@ -267,20 +271,20 @@ public class Tree {
         java.io.File directorio = new java.io.File(path);
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
-                System.out.println("Directorio creado");
+            //    System.out.println("Directorio creado");
                 
             } else {
-                System.out.println("Error al crear directorio");
+             //   System.out.println("Error al crear directorio");
             }
         }
     }
 
-    public void createFile(String name, String content, String path) {
-        Integer currentSize = content.length();
-        if(disk.getFreeSpace() >= currentSize) {
+    public boolean createFile(File newFile, String path) {
+        List<String> contents = divideContentOnSectors(newFile.getData());
+        if(disk.getFreeSpace() >= contents.size()) {
+            newFile.setSize(newFile.getData().length());
             try {
-                String finalPath = path +".txt";
-                System.out.println(finalPath);
+                String finalPath = path + ".txt";
                 java.io.File file = new java.io.File(finalPath);
                 
                 if (!file.exists()) {
@@ -289,41 +293,117 @@ public class Tree {
 
                 FileWriter fw = new FileWriter(file);
                 BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(content);
+                bw.write(newFile.getData());
                 bw.close();
-                
-                // modificar el disco
+                String fileContent = "";
+                java.io.File diskFile = new java.io.File(disk.getPathActualDisk());
+                Scanner myReader = new Scanner(diskFile);
+                ArrayList<Integer> fileSectors = new ArrayList<>();
+                int i  = 0;
+                if (disk.getSectors().isEmpty()){
+                    while (myReader.hasNextLine()) {
+                        String nextLine = myReader.nextLine();
+                        if (i < contents.size()) {
+                            fileContent = fileContent + contents.get(i) + "\n";
+                            fileSectors.add(i);
+                            disk.addTo(i);
+                            disk.substractFreeSpace();
+                        }else{
+                            fileContent = fileContent + nextLine + "\n";
+                        }
+                        i++;
+                    }
+
+                }else{
+                    int cont = 0;
+                    while (myReader.hasNextLine()) {
+                        String nextLine = myReader.nextLine();
+                        if (!disk.getSectors().contains(cont)){
+                            if (i < contents.size()) {
+                                fileContent = fileContent + contents.get(i) + "\n";
+                                fileSectors.add(cont);
+                                disk.addTo(cont);
+                                disk.substractFreeSpace();
+                            }else {
+                                fileContent = fileContent + nextLine + "\n";
+                            }
+                            i++;
+                        } else {
+                            fileContent = fileContent + nextLine + "\n";
+                        }
+                        cont ++;
+                    }
+                    newFile.setSectors(fileSectors);
+                    FileWriter fwDisk = new FileWriter(diskFile);
+                    BufferedWriter bwDisk = new BufferedWriter(fwDisk);
+                    bwDisk.write(fileContent);
+                    bwDisk.close();
+                }
+                newFile.setSectors(fileSectors);
+                FileWriter fwDisk = new FileWriter(diskFile);
+                BufferedWriter bwDisk = new BufferedWriter(fwDisk);
+                bwDisk.write(fileContent);
+                bwDisk.close();
             }
             catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
+            return true;
         }
+        return false;
     }
 
-    public Node insert(Element newNodeElement, Node location)
-    {
-        String path = memory.memoryHandler.getSimulationPath();
-        ArrayList<String> AuxPath =getPath(location);
+    private List<String> divideContentOnSectors(String content) {
+        List<String> contentSectors = new ArrayList<>();
+        if (content.length() <= disk.getSectorSize()){
+            if (content.length() < disk.getSectorSize())
+                content = content + ceros((disk.getSectorSize() - content.length()));
+            contentSectors.add(content);
+
+        }else{
+            for (int start = 0; start < content.length(); start += disk.getSectorSize()) {
+                String substring = content.substring(start, Math.min(content.length(), start + disk.getSectorSize()));
+                if (content.length() < start + disk.getSectorSize()){
+                    substring = substring + ceros(((start + disk.getSectorSize()) - content.length()));
+                }
+                contentSectors.add(substring);
+            }
+        }
+        return contentSectors;
+    }
+
+    private String ceros(int zeros) {
+        String zers = "";
+        for (int i = 0; i< zeros; i++) {
+            zers = zers + "0";
+        }
+        return zers;
+    }
+
+    public void insert(Element newNodeElement, Node location) {
+        String path = Disk.getSimulationPath();
+        ArrayList<String> AuxPath = getPath(location);
         for (String str : AuxPath) {
             path+="/"+str;
         }
         path+="/"+newNodeElement.getName();
         
         //If is a directory
+        boolean createSuccess = true;
         if(newNodeElement instanceof Folder){
             createDirectory(path);
         }
         if(newNodeElement instanceof File){
-            createFile(newNodeElement.getName(), ((File) newNodeElement).getData(),path);
+            createSuccess = createFile((File) newNodeElement, path);
         }
-        //New node
-        Node aux = new Node(newNodeElement,location);
-        
-        //Add to children
-        List<Node> auxChild= location.getChildren();
-        auxChild.add(aux);
-        location.setChildren(auxChild);
-        return aux;
+        if (createSuccess) {
+            //New node
+            Node aux = new Node(newNodeElement, location);
+            List<Node> auxChild = location.getChildren();
+            auxChild.add(aux);
+            location.setChildren(auxChild);
+        }
     }
 
     public Node getRoot() {

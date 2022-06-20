@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="501.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.MainWindow">
+<AnchorPane fx:id="panePrincipal" prefHeight="501.0" prefWidth="897.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.MainWindow">
    <children>
       <Pane prefHeight="502.0" prefWidth="906.0" style="-fx-background-color: LIGHTSKYBLUE;">
          <children>
@@ -100,7 +100,7 @@
                   <Image url="@../Imagenes/buscar.png" />
                </image>
             </ImageView>
-            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0" visible="false">
+            <Pane fx:id="placeHolder" layoutX="330.0" layoutY="61.0" prefHeight="370.0" prefWidth="486.0">
                <children>
                   <ImageView fitHeight="370.0" fitWidth="486.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -196,7 +196,7 @@
                   <Image url="@../Imagenes/copy.png" />
                </image>
             </ImageView>
-            <Pane fx:id="copyPane" layoutX="330.0" layoutY="66.0" prefHeight="400.0" prefWidth="560.0">
+            <Pane fx:id="copyPane" layoutX="330.0" layoutY="66.0" prefHeight="400.0" prefWidth="560.0" visible="false">
                <children>
                   <Label layoutX="241.0" layoutY="14.0" text="COPIAR" textFill="#2a50d1">
                      <font>

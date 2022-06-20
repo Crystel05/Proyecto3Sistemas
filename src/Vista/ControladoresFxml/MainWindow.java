@@ -2,6 +2,7 @@ package Vista.ControladoresFxml;
 
 import Controlador.Controller;
 import Modelo.CopyTypesEnum;
+import Vista.DragWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MainWindow implements Initializable {
+public class MainWindow implements Initializable, DragWindow {
 
     private final Controller controller = Controller.getInstance();
 
@@ -102,6 +103,9 @@ public class MainWindow implements Initializable {
 
     @FXML
     private Pane placeHolder;
+
+    @FXML
+    private Pane panePrincipal;
 
     private List<Pane> panesList = new ArrayList<>();
 
@@ -265,45 +269,7 @@ public class MainWindow implements Initializable {
         stage.show();
     }
 
-    //Tree view functionalities
 
-    private void fillTree() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/Vista/Imagenes/carpetIcon.png"));
-        ImageView imageV = new ImageView(image);
-        imageV.setFitHeight(10);
-        imageV.setFitWidth(15);
-        TreeItem<String> root = new TreeItem<>(controller.getMyFileSystem().getRoot().getValue().getName(), imageV);
-        if (!controller.getMyFileSystem().getRoot().getChildren().isEmpty())
-            fillTreeAux(controller.getMyFileSystem().getRoot(), root);
-        treeView.setRoot(root);
-    }
-
-    private void fillTreeAux(n_ary_tree.Node item, TreeItem<String> root) throws FileNotFoundException {
-        for (n_ary_tree.Node node : item.getChildren()){
-            String path = "";
-            int height = 0;
-            int width = 0;
-            if (node.getValue().getClass().equals(Folder.class)){
-                path = "src/Vista/Imagenes/carpetIcon.png";
-                height = 10;
-                width = 15;
-            }
-            if (node.getValue().getClass().equals(n_ary_tree.File.class)){
-                path = "src/Vista/Imagenes/fileIcon.png";
-                height = 17;
-                width = 13;
-            }
-            Image image = new Image(new FileInputStream(path));
-            ImageView imageV = new ImageView(image);
-            imageV.setFitHeight(height);
-            imageV.setFitWidth(width);
-            TreeItem<String> dir_fil = new TreeItem<>(node.getValue().getName(), imageV);
-            root.getChildren().add(dir_fil);
-            if (!node.getChildren().isEmpty()){
-                fillTreeAux(node, dir_fil);
-            }
-        }
-    }
 
     @FXML
     public void selectItem(){
@@ -313,24 +279,16 @@ public class MainWindow implements Initializable {
             if (!item.isExpanded() && !item.isLeaf()){
                 item.setExpanded(true);
             }
-            ArrayList<String> path = new ArrayList<>();
-            path.add(item.getValue());
-            getPath(item, path);
-            Collections.reverse(path);
-            System.out.println(path);
-
+            ArrayList<String> path = controller.getPath(item);
+//            System.out.println(path);
+//            System.out.println(controller.getMyFileSystem().getNode(path).getValue().getName());
             if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)){
                 n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
                 seePane(paneFilePreview);
                 filePreviewTA.setText(controller.getContent(file));
+            }else{
+                controller.setCurrentItem(item);
             }
-        }
-    }
-
-    private void getPath(TreeItem<String> item, List<String> path) {
-        if(item.getParent() != null){
-            path.add(item.getParent().getValue());
-            getPath(item.getParent(), path);
         }
     }
 
@@ -405,9 +363,12 @@ public class MainWindow implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        onDraggedScene(panePrincipal);
+        controller.setTreeView(treeView);
         fillPanesList();
         try {
-            fillTree();
+            controller.fillTree();
+            controller.setCurrentItem(treeView.getRoot());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

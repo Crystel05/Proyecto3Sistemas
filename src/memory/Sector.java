@@ -9,13 +9,13 @@ package memory;
  *
  * @author Alexander
  */
-public class sector {
+public class Sector {
     private int id;
     private int start;//subscript where it starts
     private int end;//subscript where it ends
     private boolean free;
 
-    public sector(int id, int start, int end) {
+    public Sector(int id, int start, int end) {
         this.id = id;
         this.start = start;
         this.end = end;

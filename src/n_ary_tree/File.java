@@ -5,7 +5,6 @@
  */
 package n_ary_tree;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -16,32 +15,32 @@ public class File extends Element{
 
     private String data;
     private ArrayList<Integer> sectors;
-    private LocalDate fechaCreacion;
-    private LocalDate fechaModificacion;
-    private Integer tamanio;
+    private String creationDate;
+    private String modificationDate;
+    private Integer size;
 
-    public LocalDate getFechaCreacion() {
-        return fechaCreacion;
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    public void setFechaCreacion(LocalDate fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public LocalDate getFechaModificacion() {
-        return fechaModificacion;
+    public String getModificationDate() {
+        return modificationDate;
     }
 
-    public void setFechaModificacion(LocalDate fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
+    public void setModificationDate(String modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
-    public Integer getTamanio() {
-        return tamanio;
+    public Integer getSize() {
+        return size;
     }
 
-    public void setTamanio(Integer tamanio) {
-        this.tamanio = tamanio;
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     public File(String name, String pData) {
