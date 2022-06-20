@@ -295,6 +295,9 @@ public class Tree {
     }
     
     public ArrayList<Node> find(String name){
+        if(".txt".equals(name) || "*.txt".equals(name)){
+            return getFiles();
+        }
         if (name.endsWith(".txt")){
             String str = name.substring(0, name.length()-4);
             return findAuxOnlyFiles(root, str);
