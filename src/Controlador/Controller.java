@@ -186,7 +186,12 @@ public class Controller {
     public ArrayList find(String name){//todos los nodos que tienen un element con el nombre recibido
         return myFileSystem.find(name);
     }
-
+    
+    public ArrayList listDir(ArrayList actualNodePath){//todos los nodos partiendo desde actual
+        Node actual = myFileSystem.getNode(actualNodePath);
+        return myFileSystem.getNodesAux(actual);
+    }
+    
     public String getContent(File file) {
         String content = "";
         
