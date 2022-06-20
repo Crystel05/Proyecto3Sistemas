@@ -53,10 +53,10 @@ public class Main {
         arbol.insert(fil, c);
         arbol.insert(fil2, c);
         
-        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");
+        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");pF.add("file1");
         ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
         System.out.println("Resultado de la busqueda: "+arbol.find(".txt"));
-        //arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
+        arbol.moveRename(arbol.getNode(pF), arbol.getNode(pd),"File200");
        // arbol.remove("My File System/Carpeta1/file1");        
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";

@@ -175,6 +175,14 @@ public class Controller {
         boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
         return ret;
     }
+    
+    public boolean moveRename(ArrayList nodePath, ArrayList destinyPath,String newName) throws IOException{
+        Node ToMove = myFileSystem.getNode(nodePath);
+        Node destiny = myFileSystem.getNode(destinyPath);
+        boolean ret = myFileSystem.moveRename(ToMove, destiny,newName);
+        return ret;
+    }
+    
     public ArrayList getDirectories(){ //Lista nodos que son directorios
         return myFileSystem.getFolders();
     }

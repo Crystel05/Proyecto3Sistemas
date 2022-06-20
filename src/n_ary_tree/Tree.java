@@ -143,6 +143,38 @@ public class Tree {
         return  ret;
     }
     
+    public boolean moveRename(Node toMove, Node destiny,String newName) throws IOException{
+        if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
+        ArrayList<String>pathToMove = getPath(toMove);
+        String pToMove = pathListToStr(pathToMove);
+        if(toMove.getValue() instanceof File)
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
+        if(toMove.getValue() instanceof Folder)
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
+
+        System.out.println("Path to move = "+ pToMove);
+        ArrayList<String>pathDestiny = getPath(destiny);
+        String pDestiny = pathListToStr(pathDestiny);
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
+        System.out.println("Destiny = "+ pDestiny);
+        
+        //Mover
+        java.io.File file = new java.io.File(pToMove);
+        String targetDirectory = pDestiny;
+        if(toMove.getValue() instanceof File){newName+=".txt";}
+        boolean ret = file.renameTo(new java.io.File(targetDirectory+ newName)); 
+        if (ret ){
+            Node parent = toMove.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(toMove);
+            parent.setChildren(l);
+
+            toMove.setParent(destiny);
+            destiny.addChild(toMove);
+        }
+        return  ret;
+    }
+    
     public void delete(Node n){
         if (n!=root){
         Node parent = n.getParent();
