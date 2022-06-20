@@ -54,6 +54,7 @@ public class Main {
         ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
         System.out.println("Resultado de la busqueda: "+arbol.find(".txt"));
         arbol.moveRename(arbol.getNode(pF), arbol.getNode(pd),"File200");
+        arbol.deleteSimulation();
        // arbol.remove("My File System/Carpeta1/file1");        
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";

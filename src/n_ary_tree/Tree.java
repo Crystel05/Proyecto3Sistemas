@@ -159,12 +159,12 @@ public class Tree {
         System.out.println("Destiny = "+ pDestiny);
         
         //Mover
+        toMove.getValue().setName(newName);
         java.io.File file = new java.io.File(pToMove);
         String targetDirectory = pDestiny;
-//        if(toMove.getValue() instanceof File){newName+=".txt";}
+        if(toMove.getValue() instanceof File){newName+=".txt";}
         boolean ret = file.renameTo(new java.io.File(targetDirectory+ newName)); 
         if (ret ){
-            toMove.getValue().setName(newName);
             Node parent = toMove.getParent();
             List<Node> l =  parent.getChildren();
             l.remove(toMove);
@@ -175,6 +175,26 @@ public class Tree {
         }
         return  ret;
     }
+    
+    public void deleteSimulationAux(Node n){
+        if (n.getValue() instanceof Folder){
+            List<Node> l =  n.getChildren();
+            for (Node node : l) {
+                deleteSimulationAux(node);
+            }
+        }
+        String p = "";
+        if(n.getValue() instanceof File){
+         p = Disk.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
+        }else{
+            p = Disk.getSimulationPath()+"/"+ pathListToStr(getPath(n));
+        }
+        System.out.println("Eliminando: "+p);
+        java.io.File f = new java.io.File(p);
+        f.delete();
+    }
+    
+    public void deleteSimulation(){deleteSimulationAux(root);}
     
     public void delete(Node n){
         if (n!=root){

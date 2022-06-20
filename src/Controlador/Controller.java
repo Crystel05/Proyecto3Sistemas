@@ -271,6 +271,9 @@ public class Controller {
             insertDirectory(n, myFileSystem.pathStrToList(pathDestiny));
         }
     }
-
+    
+    public void deleteSimulation(){
+        myFileSystem.deleteSimulation();
+    }
 
 }
