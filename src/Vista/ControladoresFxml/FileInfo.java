@@ -39,18 +39,16 @@ public class FileInfo implements Initializable {
     }
 
     private void fillSpaces(){
-        /*String[] nameList = pathOrigin.split("/");
-        String name = nameList[nameList.length-1];
+
+        File file = (File) controller.getMyFileSystem().getNode(controller.getPath(controller.getCurrentItem())).getValue();
+
+        ArrayList<String> properties = controller.getProperties(file);
         
-        File file = new File(pathDestiny+ "/" +name);*
-        
-        ArrayList<String> properties = controller.getProperties(file);*/
-        
-        fileExt.setText(""); //cambiar por los datos
-        creationDate.setText("");
-        modificationDate.setText("");
-        fileName.setText("");
-        size.setText("");
+        fileExt.setText(properties.get(1)); //cambiar por los datos
+        creationDate.setText(properties.get(2));
+        modificationDate.setText(properties.get(3));
+        fileName.setText(properties.get(0));
+        size.setText(properties.get(4));
     }
 
     @Override

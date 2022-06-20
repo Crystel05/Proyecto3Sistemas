@@ -7,10 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -143,21 +140,15 @@ public class Controller {
         myFileSystem.insert(newNodeElement, location);
     }
     
-    private void prueba(){
-        Folder f = new Folder("Carpeta1");
-        myFileSystem.insert(f, myFileSystem.getRoot());
-        Folder f1 = new Folder("Carpeta2");
-        myFileSystem.insert(f1, myFileSystem.getRoot());
-        Folder f2 = new Folder("Carpeta3");
-        myFileSystem.insert(f2, myFileSystem.getRoot());
+    private void prueba() {
+        insertDirectory("Carpeta1", myFileSystem.getPath(myFileSystem.getRoot()));
+        insertDirectory("Carpeta2", myFileSystem.getPath(myFileSystem.getRoot()));
+        insertDirectory("Carpeta3", myFileSystem.getPath(myFileSystem.getRoot()));
         int i = 0;
         for (Node n: myFileSystem.getRoot().getChildren()) {
-            Folder f1_sub1 = new Folder("Carpeta1");
-            myFileSystem.insert(f1_sub1, n);
+            insertDirectory("Carpeta1", myFileSystem.getPath(n));
             i++;
-            File file = new File("File " + i, "Esto es una prueba de contenido" + i+i+i+i+i+i);
-            myFileSystem.insert(file, n.getChildren().get(0));
-            System.out.println(n.getChildren().get(0).getChildren().size());
+            insertFile("File " + i, "Esto es una prueba de contenido" + i+i+i+i+i+i, myFileSystem.getPath( n.getChildren().get(0)));
         }
     }
     

@@ -282,13 +282,13 @@ public class MainWindow implements Initializable, DragWindow {
                 item.setExpanded(true);
             }
             ArrayList<String> path = controller.getPath(item);
-            if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)){
+            if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)) {
                 n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
                 seePane(paneFilePreview);
                 filePreviewTA.setText(controller.getContent(file));
-            }else{
-                controller.setCurrentItem(item);
+
             }
+            controller.setCurrentItem(item);
         }
     }
 
