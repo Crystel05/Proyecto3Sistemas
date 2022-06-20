@@ -27,7 +27,7 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("My File System"));
-        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath() + "/My File System");
+        java.io.File directorio = new java.io.File(disk.getSimulationPath() + "/My File System");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                // System.out.println("Directorio raiz creado");
@@ -95,6 +95,7 @@ public class Tree {
         return  ret;
         
     }
+    
     public boolean moveOverwriting(Node toMove, Node destiny){
         if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
         ArrayList<String>pathToMove = getPath(toMove);
@@ -354,7 +355,7 @@ public class Tree {
         return false;
     }
 
-    private List<String> divideContentOnSectors(String content) {
+    public List<String> divideContentOnSectors(String content) {
         List<String> contentSectors = new ArrayList<>();
         if (content.length() <= disk.getSectorSize()){
             if (content.length() < disk.getSectorSize())

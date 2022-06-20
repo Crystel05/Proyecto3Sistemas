@@ -1,5 +1,6 @@
 package Vista.ControladoresFxml;
 
+import Controlador.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -8,7 +9,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import n_ary_tree.File;
 
 public class FileInfo implements Initializable {
     @FXML
@@ -25,6 +28,8 @@ public class FileInfo implements Initializable {
 
     @FXML
     private Label size;
+    
+    private final Controller controller = Controller.getInstance();
 
     @FXML
     public void close(MouseEvent event) {
@@ -34,7 +39,13 @@ public class FileInfo implements Initializable {
     }
 
     private void fillSpaces(){
-        //llamar función que devuelve los datos
+        /*String[] nameList = pathOrigin.split("/");
+        String name = nameList[nameList.length-1];
+        
+        File file = new File(pathDestiny+ "/" +name);*
+        
+        ArrayList<String> properties = controller.getProperties(file);*/
+        
         fileExt.setText(""); //cambiar por los datos
         creationDate.setText("");
         modificationDate.setText("");

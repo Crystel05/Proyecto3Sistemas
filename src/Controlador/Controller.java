@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
+import java.util.Scanner;
 
 public class Controller {
 
@@ -191,7 +192,43 @@ public class Controller {
     }
 
     public String getContent(File file) {
-        return file.getData();
+        String content = "";
+        
+        try {
+            java.io.File diskFile = new java.io.File(disk.getPathActualDisk());
+            Scanner myReader = new Scanner(diskFile);
+            ArrayList<Integer> sectors = file.getSectors();
+            int maxLine = Collections.max(sectors);
+            int lineNumber = 0;
+            
+            while (myReader.hasNextLine() && (maxLine >= lineNumber)) {
+                if (sectors.contains(lineNumber)){
+                    String line = myReader.nextLine();
+                    line = line.replace("0", "");
+                    content = content + line;
+                } else {
+                    myReader.nextLine();
+                }
+
+                lineNumber++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return content;
+    }
+    
+    public ArrayList<String> getProperties(File file) {
+        ArrayList<String> properties = new ArrayList<>();
+        
+        properties.add(file.getName());
+        properties.add(".txt");
+        properties.add(file.getCreationDate());
+        properties.add(file.getModificationDate());
+        properties.add(String.valueOf(file.getSize()));
+        
+        return properties;
     }
 
     //Copy
