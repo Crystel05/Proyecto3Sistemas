@@ -71,8 +71,10 @@ public class Controller {
         return ret;
     }
     public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath){
-    
-        return false;
+        Node ToMove = myFileSystem.getNode(nodePath);
+        Node destiny = myFileSystem.getNode(destinyPath);
+        boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
+        return ret;
     }
     public ArrayList getDirectories(){ //Lista nodos que son directorios
         return myFileSystem.getFolders();
