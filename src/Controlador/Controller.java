@@ -1,6 +1,10 @@
 package Controlador;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import java.io.IOException;
 public class Controller {
 
     private final Disk disk = Disk.getInstance();
+    private CopyController copyController = new CopyController();
     private Tree myFileSystem;
     private static Controller controller;
     private TreeItem<String> currentItem;
@@ -164,7 +169,6 @@ public class Controller {
             return true;
         }
         return false;
-          
     }
     
     public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
@@ -196,16 +200,26 @@ public class Controller {
     }
 
     //Copy
-    public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
-
+    public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        copyRealVirtual(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory){
-
+    public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        copyController.copy(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory){
+    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+        String[] nameL = pathOrigin.split("/");
+        String[] name = nameL[nameL.length - 1].split("\\.");
+        String n = name[0];
 
+        if (!isDirectory) {
+            byte[] encoded = Files.readAllBytes(Paths.get(pathOrigin));
+            String content = new String(encoded, StandardCharsets.UTF_8);
+            insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
+        }else{
+            insertDirectory(n, myFileSystem.pathStrToList(pathDestiny));
+        }
     }
 
 

@@ -7,7 +7,6 @@ package n_ary_tree;
 
 import Modelo.Disk;
 import java.io.BufferedReader;
-import memory.MemoryHandler;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -31,7 +30,7 @@ public class Tree {
     {
         root = new Node();
         root.setValue(new Folder("My File System"));
-        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath() + "/My File System");
+        java.io.File directorio = new java.io.File(Disk.getSimulationPath() + "/My File System");
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                // System.out.println("Directorio raiz creado");
@@ -75,13 +74,13 @@ public class Tree {
         ArrayList<String>pathToMove = getPath(toMove);
         String pToMove = pathListToStr(pathToMove);
         if(toMove.getValue() instanceof File)
-            pToMove = memory.MemoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
         if(toMove.getValue() instanceof Folder)
-            pToMove = memory.MemoryHandler.getSimulationPath()+"/"+pToMove;
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
 
         ArrayList<String>pathDestiny = getPath(destiny);
         String pDestiny = pathListToStr(pathDestiny);
-        pDestiny = memory.MemoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
 
         //Mover
         java.io.File file = new java.io.File(pToMove);
@@ -104,14 +103,14 @@ public class Tree {
         ArrayList<String>pathToMove = getPath(toMove);
         String pToMove = pathListToStr(pathToMove);
         if(toMove.getValue() instanceof File)
-            pToMove = memory.MemoryHandler.getSimulationPath()+"/"+pToMove+".txt";
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
         if(toMove.getValue() instanceof Folder)
-            pToMove = memory.MemoryHandler.getSimulationPath()+"/"+pToMove;
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
 
         System.out.println("Path to move = "+ pToMove);
         ArrayList<String>pathDestiny = getPath(destiny);
         String pDestiny = pathListToStr(pathDestiny);
-        pDestiny = memory.MemoryHandler.getSimulationPath()+"/"+pDestiny+"/";
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
         System.out.println("Destiny = "+ pDestiny);
         //Delete el existente
         String p = "";
@@ -154,9 +153,9 @@ public class Tree {
         
         String p = "";
         if(n.getValue() instanceof File){
-            p = MemoryHandler.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
+         p = Disk.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
         }else{
-            p = MemoryHandler.getSimulationPath()+"/"+ pathListToStr(getPath(n));
+            p = Disk.getSimulationPath()+"/"+ pathListToStr(getPath(n));
         }
         java.io.File f = new java.io.File(p);
         if (f.delete()){
