@@ -237,11 +237,10 @@ public class Tree {
                 body = new StringBuilder(texto);
             }
             while(texto != null) {
-                texto = br.readLine();
                 if (sectors.contains(count)){
                     //Remover de la lista de sectores de disco
                     List<Integer> sects = disk.getSectors();
-                    sects.remove(count);
+                    sects.remove((Object)count);
                     disk.setSectors(sects);
                     disk.addFreeSpace();
                     //Escribir la linea de ceros en el disco
@@ -253,6 +252,7 @@ public class Tree {
                 }else{
                     if(texto!=null) body.append("\n").append(texto);
                 }
+                texto = br.readLine();
                 count++;
             }
             System.out.println(count);
