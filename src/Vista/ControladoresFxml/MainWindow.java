@@ -2,6 +2,7 @@ package Vista.ControladoresFxml;
 
 import Controlador.Controller;
 import Modelo.CopyTypesEnum;
+import Modelo.MoveTypes;
 import Vista.DragWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,6 +80,18 @@ public class MainWindow implements Initializable, DragWindow {
     @FXML
     private TextField newName;
 
+    @FXML
+    private RadioButton directorioRBMove;
+
+    @FXML
+    private RadioButton archivoRBMove;
+
+    @FXML
+    private TextField moveOriginTF;
+
+    @FXML
+    private TextField destMoveTF;
+
     //Find files variables
 
     @FXML
@@ -125,11 +138,14 @@ public class MainWindow implements Initializable, DragWindow {
     @FXML
     public void radioButtonSelectedFile(ActionEvent event){
         directorioRB.setSelected(false);
+        directorioRBMove.setSelected(false);
     }
 
     @FXML public void radioButtonSelectedDirectory(ActionEvent event){
         archivoRB.setSelected(false);
+        archivoRBMove.setSelected(false);
     }
+
     @FXML
     public void copy(MouseEvent event) {
         seePane(copyPane);
@@ -144,11 +160,20 @@ public class MainWindow implements Initializable, DragWindow {
 
     @FXML
     public void file_dirToCopy(MouseEvent event){
-        if (archivoRB.isSelected()){
+        System.out.println(archivoRBMove.isSelected());
+        if (archivoRB.isSelected() ){
             openFile(event);
         }
         if (directorioRB.isSelected()){
             openDirectory(event, false);
+        }
+
+        if (directorioRBMove.isSelected()){
+            openDirectoryMove(event, false);
+        }
+
+        if (archivoRBMove.isSelected()){
+            openFileMove(event);
         }
     }
 
@@ -157,44 +182,86 @@ public class MainWindow implements Initializable, DragWindow {
         openDirectory(event, true);
     }
 
-    public void openFile(MouseEvent event) {
-        if (copiesTypesCB.getSelectionModel().getSelectedItem() != null) {
+    @FXML
+    public void destinyDir(MouseEvent event){
+        openDirectoryMove(event, true);
+    }
+
+    private void openFile(MouseEvent event) {
+        try {
+            if (copiesTypesCB.getSelectionModel().getSelectedItem() != null) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Archivo a copiar");
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+                if (copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum())
+                        || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())) {
+                    fileChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
+                }
+                Node source = (Node) event.getSource();
+                Stage stageActual = (Stage) source.getScene().getWindow();
+
+                File selectedFile = fileChooser.showOpenDialog(stageActual);
+                String path = selectedFile.getAbsolutePath().replace("\\", "/");
+                fileToCopy.setText(path);
+            }
+        }catch (NullPointerException ignore){}
+
+    }
+
+    private void openFileMove(MouseEvent event){
+        try {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Archivo a copiar");
+            fileChooser.setTitle("Archivo a mover");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-            if (copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum())
-                    || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())) {
-                fileChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
-            }
+            fileChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
             Node source = (Node) event.getSource();
             Stage stageActual = (Stage) source.getScene().getWindow();
 
             File selectedFile = fileChooser.showOpenDialog(stageActual);
-            String path = selectedFile.getAbsolutePath().replace("\\", "/");;
-            fileToCopy.setText(path);
-        }
+            String path = selectedFile.getAbsolutePath().replace("\\", "/");
+            moveOriginTF.setText(path);
+        }catch (NullPointerException ignore){}
     }
 
-    public void openDirectory(MouseEvent event, boolean isDestiny) {
-        if (!copiesTypesCB.getSelectionModel().getSelectedItem().isEmpty()) {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Ruta destino");
-            if ((!isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum()))
-                    || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())
-                    || (isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.REAL_VIRTUAL.getTypeEnum()))) {
-                directoryChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
+    private void openDirectory(MouseEvent event, boolean isDestiny) {
+        try {
+            if (!copiesTypesCB.getSelectionModel().getSelectedItem().isEmpty()) {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Ruta destino");
+                if ((!isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_REAL.getTypeEnum()))
+                        || copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.VIRTUAL_VIRTUAL.getTypeEnum())
+                        || (isDestiny && copiesTypesCB.getSelectionModel().getSelectedItem().equals(CopyTypesEnum.REAL_VIRTUAL.getTypeEnum()))) {
+                    directoryChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
+                }
+                Node source = (Node) event.getSource();
+                Stage stageActual = (Stage) source.getScene().getWindow();
+                File selectedDirectory = directoryChooser.showDialog(stageActual);
+                String path = selectedDirectory.getAbsolutePath().replace("\\", "/");
+                System.out.println(path);
+                if (isDestiny)
+                    destiny.setText(path);
+                else
+                    fileToCopy.setText(path);
             }
+        }catch (NullPointerException ignored){}
+    }
+
+    private void openDirectoryMove(MouseEvent event, boolean isDestiny){
+        try {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Ruta origen");
+            directoryChooser.setInitialDirectory(new File("Simulacion File System/My File System"));
             Node source = (Node) event.getSource();
             Stage stageActual = (Stage) source.getScene().getWindow();
             File selectedDirectory = directoryChooser.showDialog(stageActual);
             String path = selectedDirectory.getAbsolutePath().replace("\\", "/");
-            System.out.println(path);
-            if (isDestiny)
-                destiny.setText(path);
+            if (!isDestiny)
+                moveOriginTF.setText(path);
             else
-                fileToCopy.setText(path);
-        }
+                destMoveTF.setText(path);
+        }catch (NullPointerException ignore){}
     }
 
     @FXML
@@ -207,7 +274,7 @@ public class MainWindow implements Initializable, DragWindow {
                     controller.copyVirtualReal(fileToCopy.getText(), destiny.getText(), isDirectory);
                     break;
                 case "Ruta real a ruta virtual":
-                    controller.copyRealVirtual(fileToCopy.getText(), destiny.getText(), isDirectory);
+                    controller.copyRealVirtual(fileToCopy.getText(), destiny.getText(), isDirectory, null);
                     controller.fillTree();
                     break;
                 case "Ruta virtual a ruta virtual":
@@ -223,17 +290,46 @@ public class MainWindow implements Initializable, DragWindow {
     @FXML
     public void move(MouseEvent event) {
         seePane(movePane);
+        moveOriginTF.setText("");
+        destMoveTF.setText("");
+        renamePane.setVisible(false);
     }
 
     @FXML
-    public void confirmMove(ActionEvent event) {
+    public void confirmMove(ActionEvent event) throws IOException {
+        if (!destMoveTF.getText().isEmpty() && !moveOriginTF.getText().isEmpty()) {
+            if (verifyEquals()) {
+                renamePane.setVisible(true);
+            }else{
+                controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.NORMAL, null);
+            }
+        }
+    }
 
-        //renamePane.setVisible(true);
+    private boolean verifyEquals() {
+        List<n_ary_tree.Node> nodes = controller.getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(destMoveTF.getText())).getChildren();
+        String originNodeName = controller.getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(moveOriginTF.getText())).getValue().getName();
+        for (n_ary_tree.Node n : nodes){
+            if (n.getValue().getName().equals(originNodeName)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @FXML
-    public void replace(ActionEvent event) {
-        //remplazar
+    public void moveRename(ActionEvent event) throws IOException {
+        if (!newName.getText().isEmpty()){
+            controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.RENAME, newName.getText());
+        }
+    }
+
+    @FXML
+    public void replace(ActionEvent event) throws IOException {
+        if (!moveOriginTF.getText().isEmpty() && !destMoveTF.getText().isEmpty()){
+            controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.OVERWRITE, null);
+            renamePane.setVisible(false);
+        }
     }
 
     //Search functionalities

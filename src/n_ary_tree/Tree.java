@@ -143,12 +143,65 @@ public class Tree {
         return  ret;
     }
     
+    public boolean moveRename(Node toMove, Node destiny,String newName) throws IOException{
+        if(destiny.getValue() instanceof File){System.err.println("El destino no es un directorio");return false;}
+        ArrayList<String>pathToMove = getPath(toMove);
+        String pToMove = pathListToStr(pathToMove);
+        if(toMove.getValue() instanceof File)
+            pToMove = Disk.getSimulationPath()+"/"+pToMove+".txt";
+        if(toMove.getValue() instanceof Folder)
+            pToMove = Disk.getSimulationPath()+"/"+pToMove;
+
+        System.out.println("Path to move = "+ pToMove);
+        ArrayList<String>pathDestiny = getPath(destiny);
+        String pDestiny = pathListToStr(pathDestiny);
+        pDestiny = Disk.getSimulationPath()+"/"+pDestiny+"/";
+        System.out.println("Destiny = "+ pDestiny);
+        
+        //Mover
+        toMove.getValue().setName(newName);
+        java.io.File file = new java.io.File(pToMove);
+        String targetDirectory = pDestiny;
+        if(toMove.getValue() instanceof File){newName+=".txt";}
+        boolean ret = file.renameTo(new java.io.File(targetDirectory+ newName)); 
+        if (ret ){
+            Node parent = toMove.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(toMove);
+            parent.setChildren(l);
+
+            toMove.setParent(destiny);
+            destiny.addChild(toMove);
+        }
+        return  ret;
+    }
+    
+    public void deleteSimulationAux(Node n){
+        if (n.getValue() instanceof Folder){
+            List<Node> l =  n.getChildren();
+            for (Node node : l) {
+                deleteSimulationAux(node);
+            }
+        }
+        String p = "";
+        if(n.getValue() instanceof File){
+         p = Disk.getSimulationPath()+"/"+pathListToStr(getPath(n))+".txt";
+        }else{
+            p = Disk.getSimulationPath()+"/"+ pathListToStr(getPath(n));
+        }
+        System.out.println("Eliminando: "+p);
+        java.io.File f = new java.io.File(p);
+        f.delete();
+    }
+    
+    public void deleteSimulation(){deleteSimulationAux(root);}
+    
     public void delete(Node n){
         if (n!=root){
-        Node parent = n.getParent();
-        List<Node> l =  parent.getChildren();
-        l.remove(n);
-        parent.setChildren(l);
+            Node parent = n.getParent();
+            List<Node> l =  parent.getChildren();
+            l.remove(n);
+            parent.setChildren(l);
         }
         
         String p = "";
@@ -179,9 +232,9 @@ public class Tree {
             String texto = br.readLine();
             int count = 0;
             ArrayList<Integer> sectors = ((File)(n.getValue())).getSectors();
-            String body="";
+            StringBuilder body= new StringBuilder();
             if(!sectors.contains(0)){
-                body = texto;
+                body = new StringBuilder(texto);
             }
             while(texto != null) {
                 texto = br.readLine();
@@ -192,18 +245,22 @@ public class Tree {
                     disk.setSectors(sects);
                     disk.addFreeSpace();
                     //Escribir la linea de ceros en el disco
-                    for (int i = 0; i < memory.MemoryHandler.lenghtXSector; i++) {
-                        body+="0";
+                    for (int i = 0; i < disk.getSectorSize(); i++) {
+                        body.append("0");
                     }
+                    if (sectors.contains(count+1))
+                        body.append("\n");
                 }else{
-                    if(texto!=null)body += "\n"+texto;
+                    if(texto!=null) body.append("\n").append(texto);
                 }
                 count++;
             }
+            System.out.println(count);
             java.io.File f = new java.io.File(disk.getPathActualDisk());
             FileWriter fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(body);
+            assert body != null;
+            bw.write(body.toString());
             bw.close();
             
         }

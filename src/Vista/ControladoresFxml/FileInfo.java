@@ -1,11 +1,13 @@
 package Vista.ControladoresFxml;
 
 import Controlador.Controller;
+import Vista.DragWindow;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -13,7 +15,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import n_ary_tree.File;
 
-public class FileInfo implements Initializable {
+public class FileInfo implements Initializable, DragWindow {
+
+    @FXML
+    private Pane pane;
+
     @FXML
     private Label fileExt;
 
@@ -54,5 +60,6 @@ public class FileInfo implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fillSpaces();
+        onDraggedScene(pane);
     }
 }

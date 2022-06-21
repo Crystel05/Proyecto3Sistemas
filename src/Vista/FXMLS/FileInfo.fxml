@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="324.0" prefWidth="510.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.FileInfo">
+<AnchorPane fx:id="pane" prefHeight="324.0" prefWidth="510.0" style="-fx-background-color: LIGHTSKYBLUE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vista.ControladoresFxml.FileInfo">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LIGHTSKYBLUE" height="326.0" stroke="#2a50d1" strokeType="INSIDE" strokeWidth="3.0" width="510.0" />
       <Label layoutX="16.0" layoutY="74.0" text="Nombre del archivo" textFill="#2a50d1">

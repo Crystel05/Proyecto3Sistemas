@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import Modelo.Disk;
 import java.io.IOException;
-import memory.MemoryHandler;
 import n_ary_tree.File;
 import n_ary_tree.Folder;
 import n_ary_tree.Node;
@@ -14,9 +13,8 @@ public class Main {
         System.out.println("HOLA 2");
 
         //Set memory data
-        MemoryHandler.setData(100, 100);
 
-        java.io.File directorio = new java.io.File(MemoryHandler.getSimulationPath());
+        java.io.File directorio = new java.io.File(Disk.getSimulationPath());
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -29,8 +27,7 @@ public class Main {
         disk.createVirtualDisk(100, 100);
         
         //disk.setSize(100*100);
-        
-        MemoryHandler.setData(100, 100);
+
         Tree arbol = new Tree();
         Folder f = new Folder("Carpeta1");
         arbol.insert(f, arbol.getRoot());
@@ -53,10 +50,11 @@ public class Main {
         arbol.insert(fil, c);
         arbol.insert(fil2, c);
         
-        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");
+        ArrayList<String>pF = new ArrayList<>();pF.add("My File System");pF.add("Carpeta1");pF.add("file1");
         ArrayList<String>pd = new ArrayList<>();pd.add("My File System");pd.add("Carpeta2");
         System.out.println("Resultado de la busqueda: "+arbol.find(".txt"));
-        //arbol.moveOverwriting(arbol.getNode(pF), arbol.getNode(pd));
+        arbol.moveRename(arbol.getNode(pF), arbol.getNode(pd),"File200");
+        arbol.deleteSimulation();
        // arbol.remove("My File System/Carpeta1/file1");        
               /*  java.io.File file = new java.io.File("./Simulacion File System/root/Carpeta1/file1.txt");
 		String targetDirectory = "./Simulacion File System/root/";

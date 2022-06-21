@@ -9,21 +9,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import Modelo.MoveTypes;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Controller {
 
     private final Disk disk = Disk.getInstance();
-    private CopyController copyController = new CopyController();
+    private final CopyController copyController = new CopyController();
     private Tree myFileSystem;
     private static Controller controller;
     private TreeItem<String> currentItem;
@@ -34,9 +32,6 @@ public class Controller {
             controller = new Controller();
         }
         return controller;
-    }
-    public Disk getDisk() {
-        return disk;
     }
 
     public Tree getMyFileSystem() {
@@ -55,10 +50,6 @@ public class Controller {
 
     public void setCurrentItem(TreeItem<String> currentItem) {
         this.currentItem = currentItem;
-    }
-
-    public TreeView<String> getTreeView() {
-        return treeView;
     }
 
     public void setTreeView(TreeView<String> treeView) {
@@ -126,6 +117,7 @@ public class Controller {
     //create files
 
     public void insertFile(String name, String content, ArrayList<String> locationPath) {
+        System.out.println(name);
         Node location = myFileSystem.getNode(locationPath);
         File newNodeElement = new File(name, content);
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -154,48 +146,57 @@ public class Controller {
         }
     }
     
-    public boolean delete(ArrayList filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
+    public void delete(ArrayList<String> filePath) throws IOException{  ///filepath a partir de root   --->  {root, carpeta, nombre file o directorio }
         //mapeo para obtener el nodo a base del nombre o la ruta
         Node node = myFileSystem.getNode(filePath);
         
         if (node != null){
             myFileSystem.remove(myFileSystem.pathListToStr(filePath));
-            return true;
         }
-        return false;
+    }
+
+    public void move(String originPath, String destinyPath, MoveTypes type, String newName) throws IOException {
+        ArrayList<String> oriPath = myFileSystem.pathStrToList(originPath);
+        ArrayList<String> destPath = myFileSystem.pathStrToList(destinyPath);
+        switch (type){
+            case NORMAL:
+                if (moveTo(oriPath, destPath))
+                    fillTree();
+                break;
+            case RENAME:
+                if (moveRename(oriPath, destPath, newName))
+                    fillTree();
+                break;
+            case OVERWRITE:
+                if (moveOverwriting(oriPath, destPath))
+                    fillTree();
+                break;
+        }
     }
     
-    public boolean moveTo(ArrayList nodePath, ArrayList destinyPath){
+    private boolean moveTo(ArrayList<String> nodePath, ArrayList<String> destinyPath){
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
-        boolean ret = myFileSystem.moveTo(ToMove, destiny);
-        return ret;
+        return myFileSystem.moveTo(ToMove, destiny);
     }
-    public boolean moveOverwriting(ArrayList nodePath, ArrayList destinyPath) throws IOException{
+    private boolean moveOverwriting(ArrayList<String> nodePath, ArrayList<String> destinyPath) throws IOException{
         Node ToMove = myFileSystem.getNode(nodePath);
         Node destiny = myFileSystem.getNode(destinyPath);
-        boolean ret = myFileSystem.moveOverwriting(ToMove, destiny);
-        return ret;
-    }
-    public ArrayList getDirectories(){ //Lista nodos que son directorios
-        return myFileSystem.getFolders();
+        return myFileSystem.moveOverwriting(ToMove, destiny);
     }
     
-    public ArrayList getEverythingNodes(){ // Todos los nodos
-        return myFileSystem.getNodes();
+    public boolean moveRename(ArrayList<String> nodePath, ArrayList<String> destinyPath,String newName) throws IOException{
+        Node ToMove = myFileSystem.getNode(nodePath);
+        Node destiny = myFileSystem.getNode(destinyPath);
+        return myFileSystem.moveRename(ToMove, destiny,newName);
     }
     
-    public ArrayList find(String name){//todos los nodos que tienen un element con el nombre recibido
+    public ArrayList<Node> find(String name){//todos los nodos que tienen un element con el nombre recibido
         return myFileSystem.find(name);
     }
-    
-    public ArrayList listDir(ArrayList actualNodePath){//todos los nodos partiendo desde actual
-        Node actual = myFileSystem.getNode(actualNodePath);
-        return myFileSystem.getNodesAux(actual);
-    }
-    
+
     public String getContent(File file) {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         
         try {
             java.io.File diskFile = new java.io.File(disk.getPathActualDisk());
@@ -208,7 +209,7 @@ public class Controller {
                 if (sectors.contains(lineNumber)){
                     String line = myReader.nextLine();
                     line = line.replace("0", "");
-                    content = content + line;
+                    content.append(line);
                 } else {
                     myReader.nextLine();
                 }
@@ -219,7 +220,7 @@ public class Controller {
             e.printStackTrace();
         }
     
-        return content;
+        return content.toString();
     }
     
     public ArrayList<String> getProperties(File file) {
@@ -294,26 +295,42 @@ public class Controller {
 
     //Copy
     public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
-        copyRealVirtual(pathOrigin, pathDestiny, isDirectory);
+        if (myFileSystem.getNode(myFileSystem.pathStrToList(pathDestiny)).getChildren()
+                .contains(myFileSystem.getNode(myFileSystem.pathStrToList(pathOrigin)))) {
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+            Date date = new Date();
+            String dateToStr = dateFormat.format(date);
+            String[] newNameL = pathOrigin.split("/");
+            String[] newNameSTx = newNameL[newNameL.length-1].split("\\.");
+            String newName = newNameSTx[0] + "_" + dateToStr;
+            copyRealVirtual(pathOrigin, pathDestiny, isDirectory, newName);
+        }else
+            copyRealVirtual(pathOrigin, pathDestiny, isDirectory, null);
     }
 
     public void copyVirtualReal(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
         copyController.copy(pathOrigin, pathDestiny, isDirectory);
     }
 
-    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
+    public void copyRealVirtual(String pathOrigin, String pathDestiny, boolean isDirectory, String newName) throws IOException {
         String[] nameL = pathOrigin.split("/");
         String[] name = nameL[nameL.length - 1].split("\\.");
         String n = name[0];
-
         if (!isDirectory) {
+
             byte[] encoded = Files.readAllBytes(Paths.get(pathOrigin));
             String content = new String(encoded, StandardCharsets.UTF_8);
-            insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
+            if (newName != null)
+                insertFile(newName, content, myFileSystem.pathStrToList(pathDestiny));
+            else
+                insertFile(n, content, myFileSystem.pathStrToList(pathDestiny));
         }else{
             insertDirectory(n, myFileSystem.pathStrToList(pathDestiny));
         }
     }
-
+    
+    public void deleteSimulation(){
+        myFileSystem.deleteSimulation();
+    }
 
 }
