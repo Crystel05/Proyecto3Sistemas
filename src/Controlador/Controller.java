@@ -263,7 +263,7 @@ public class Controller {
                     } else if(disk.getSectors().contains(cont)) {
                         fileContent = fileContent + myReader.nextLine() + "\n";
                     } else {
-                        if(newSectors > 0 && news < newSectors + 1) {
+                        if((newSectors > 0) && (news < contents.size())) {
                             fileContent = fileContent + contents.get(news) + "\n";
                             news++;
                             fileSectors.add(cont);
