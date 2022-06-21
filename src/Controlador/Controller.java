@@ -43,7 +43,7 @@ public class Controller {
     public void createVirtualDisk(int sectors, int sectorSize) {
         disk.createVirtualDisk(sectors, sectorSize);
         myFileSystem = new Tree();
-        prueba();
+        //prueba();
     }
 
     public TreeItem<String> getCurrentItem() {
@@ -296,9 +296,19 @@ public class Controller {
     }
 
     //Copy
+
+    public boolean verifyEquals(String destPath, String originPath) {
+        List<n_ary_tree.Node> nodes = getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(destPath)).getChildren();
+        String originNodeName = getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(originPath)).getValue().getName();
+        for (n_ary_tree.Node n : nodes){
+            if (n.getValue().getName().equals(originNodeName)){
+                return true;
+            }
+        }
+        return false;
+    }
     public void copyVirtualVirtual(String pathOrigin, String pathDestiny, boolean isDirectory) throws IOException {
-        if (myFileSystem.getNode(myFileSystem.pathStrToList(pathDestiny)).getChildren()
-                .contains(myFileSystem.getNode(myFileSystem.pathStrToList(pathOrigin)))) {
+        if (verifyEquals(pathDestiny, pathOrigin)) {
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
             Date date = new Date();
             String dateToStr = dateFormat.format(date);

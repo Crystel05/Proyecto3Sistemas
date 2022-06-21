@@ -34,7 +34,9 @@ public class FileInfo implements Initializable, DragWindow {
 
     @FXML
     private Label size;
-    
+
+    @FXML
+    private Label fileNameTitle;
     private final Controller controller = Controller.getInstance();
 
     @FXML
@@ -49,8 +51,8 @@ public class FileInfo implements Initializable, DragWindow {
         File file = (File) controller.getMyFileSystem().getNode(controller.getPath(controller.getCurrentItem())).getValue();
 
         ArrayList<String> properties = controller.getProperties(file);
-        
-        fileExt.setText(properties.get(1)); //cambiar por los datos
+        fileNameTitle.setText(properties.get(0));
+        fileExt.setText(properties.get(1));
         creationDate.setText(properties.get(2));
         modificationDate.setText(properties.get(3));
         fileName.setText(properties.get(0));

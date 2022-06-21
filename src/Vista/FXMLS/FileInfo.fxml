@@ -33,7 +33,7 @@
                   <Font name="Britannic Bold" size="22.0" />
                </font>
             </Label>
-            <Label text="NOMBRE" textFill="#2a50d1">
+            <Label fx:id="fileNameTitle" text="NOMBRE" textFill="#2a50d1">
                <font>
                   <Font name="Britannic Bold" size="22.0" />
                </font>

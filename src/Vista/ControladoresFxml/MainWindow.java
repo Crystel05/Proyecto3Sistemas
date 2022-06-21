@@ -298,7 +298,7 @@ public class MainWindow implements Initializable, DragWindow {
     @FXML
     public void confirmMove(ActionEvent event) throws IOException {
         if (!destMoveTF.getText().isEmpty() && !moveOriginTF.getText().isEmpty()) {
-            if (verifyEquals()) {
+            if (controller.verifyEquals(destMoveTF.getText(), moveOriginTF.getText())) {
                 renamePane.setVisible(true);
             }else{
                 controller.move(moveOriginTF.getText(), destMoveTF.getText(), MoveTypes.NORMAL, null);
@@ -306,16 +306,7 @@ public class MainWindow implements Initializable, DragWindow {
         }
     }
 
-    private boolean verifyEquals() {
-        List<n_ary_tree.Node> nodes = controller.getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(destMoveTF.getText())).getChildren();
-        String originNodeName = controller.getMyFileSystem().getNode(controller.getMyFileSystem().pathStrToList(moveOriginTF.getText())).getValue().getName();
-        for (n_ary_tree.Node n : nodes){
-            if (n.getValue().getName().equals(originNodeName)){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     @FXML
     public void moveRename(ActionEvent event) throws IOException {
