@@ -125,6 +125,8 @@ public class MainWindow implements Initializable, DragWindow {
     void save(ActionEvent event) {
         guardarCambios.setVisible(false);
         filePreviewTA.setEditable(false);
+        n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(controller.getPath(controller.getCurrentItem())).getValue();
+        controller.editFile(file, filePreviewTA.getText());
     }
 
     @FXML
@@ -416,6 +418,7 @@ public class MainWindow implements Initializable, DragWindow {
 
     @FXML
     private void close(MouseEvent event){
+        controller.deleteSimulation();
         System.exit(1);
     }
 
