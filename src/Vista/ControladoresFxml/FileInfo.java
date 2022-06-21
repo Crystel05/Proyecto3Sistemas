@@ -50,6 +50,8 @@ public class FileInfo implements Initializable, DragWindow {
 
         ArrayList<String> properties = controller.getProperties(file);
         
+        controller.editFile(file, "Esto es una prueba de contenido111111 y este es un nuevo contenido del archivo");
+        
         fileExt.setText(properties.get(1)); //cambiar por los datos
         creationDate.setText(properties.get(2));
         modificationDate.setText(properties.get(3));
