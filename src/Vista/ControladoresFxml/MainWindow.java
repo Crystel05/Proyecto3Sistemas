@@ -370,6 +370,7 @@ public class MainWindow implements Initializable, DragWindow {
             if (controller.getMyFileSystem().getNode(path).getValue().getClass().equals(n_ary_tree.File.class)) {
                 n_ary_tree.File file = (n_ary_tree.File) controller.getMyFileSystem().getNode(path).getValue();
                 seePane(paneFilePreview);
+                fileName.setText(file.getName());
                 filePreviewTA.setText(controller.getContent(file));
 
             }
