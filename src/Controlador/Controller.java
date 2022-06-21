@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import n_ary_tree.*;
 import Modelo.Disk;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -230,6 +232,64 @@ public class Controller {
         properties.add(String.valueOf(file.getSize()));
         
         return properties;
+    }
+    
+    public boolean editFile(File file, String newContent) {
+        List<String> oldContents = myFileSystem.divideContentOnSectors(file.getData());
+        List<String> contents = myFileSystem.divideContentOnSectors(newContent);
+        
+        Integer newSectors = (contents.size()) - (oldContents.size()); // cantidad de sectores nuevos que ocupo
+        
+        if(disk.getFreeSpace() >= newSectors) {
+            file.setSize(newContent.length());
+            try {
+                
+                String fileContent = "";
+                java.io.File diskFile = new java.io.File(disk.getPathActualDisk());
+                Scanner myReader = new Scanner(diskFile);
+                ArrayList<Integer> fileSectors = file.getSectors();    
+                
+                int updatedCount = 0;
+                int cont = 0;
+                int news = oldContents.size();
+                while (myReader.hasNextLine()) {
+                    if(disk.getSectors().contains(cont) && fileSectors.contains(cont)) {
+                        fileContent = fileContent + contents.get(updatedCount) + "\n";
+                        updatedCount++;
+                        myReader.nextLine();
+                    } else if(disk.getSectors().contains(cont)) {
+                        fileContent = fileContent + myReader.nextLine() + "\n";
+                    } else {
+                        if(newSectors > 0 && news < newSectors + 1) {
+                            fileContent = fileContent + contents.get(news) + "\n";
+                            news++;
+                            fileSectors.add(cont);
+                            disk.addTo(cont);
+                            disk.substractFreeSpace();
+                            myReader.nextLine();
+                        } else {
+                            fileContent = fileContent + myReader.nextLine() + "\n";
+                        }
+                    }
+                    cont++;
+                }
+                
+                file.setData(fileContent);
+                file.setSectors(fileSectors);
+                FileWriter fwDisk = new FileWriter(diskFile);
+                BufferedWriter bwDisk = new BufferedWriter(fwDisk);
+                bwDisk.write(fileContent);
+                bwDisk.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                
+                return false;
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
 
     //Copy
